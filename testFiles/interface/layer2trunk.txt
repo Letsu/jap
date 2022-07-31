@@ -1,0 +1,8 @@
+interface TenGigabitEthernet1/0/2
+ description gi1/0/2@cr-01
+ switchport trunk native vlan 188
+ switchport trunk allowed vlan 1,2,138-143,158,164,176,188,189,196,300,500,621
+ switchport trunk allowed vlan add 700,900,1160
+ switchport mode trunk
+ storm-control broadcast level 1.00
+ ip dhcp snooping trust

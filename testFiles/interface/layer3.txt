@@ -1,0 +1,6 @@
+interface BVI2
+	ip address 10.0.2.1 255.255.255.0
+	ip address 192.1.0.2 255.255.255.0 secondary
+	ip helper-address 10.0.0.100
+    ip helper-address 10.0.0.101
+	ip vrf forwarding red-custom

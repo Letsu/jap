@@ -1,0 +1,1186 @@
+!
+! Last configuration change at 16:06:56 met Mon May 30 2022 by user
+! NVRAM config last updated at 05:19:09 met Wed Jun 1 2022 by user
+!
+version 16.9
+no service pad
+service timestamps debug datetime msec localtime
+service timestamps log datetime msec localtime
+service password-encryption
+! Call-home is enabled by Smart-Licensing.
+service call-home
+no platform punt-keepalive disable-kernel-core
+!
+hostname router-01
+!
+!
+vrf definition Mgmt-vrf
+ !
+ address-family ipv4
+ exit-address-family
+ !
+ address-family ipv6
+ exit-address-family
+!
+logging userinfo
+logging buffered 65536 informational
+!
+aaa new-model
+!
+!
+!
+!
+!
+aaa session-id common
+boot system switch all flash:packages.conf
+clock timezone met 1 0
+clock summer-time met recurring last Sun Mar 2:00 last Sun Oct 2:00
+switch 1 provision ws-c3850-48xs
+!
+!
+!
+!
+ip vrf customer-1
+ rd 25325:700
+!
+ip vrf customer-2
+ rd 25325:1300
+!
+ip vrf customer-3
+ rd 25325:3700
+!
+ip vrf customer-4
+ rd 25325:1450
+!
+ip vrf customer-5
+ rd 25325:3400
+!
+ip vrf customer-6
+ rd 25325:1000
+!
+ip vrf customer-7
+ rd 25325:940
+!
+ip vrf customer-8
+ rd 25325:500
+!
+ip vrf customer-9
+ rd 25325:950
+!
+ip vrf customer-10
+ rd 25325:100
+!
+ip vrf customer-11
+ rd 25325:630
+!
+!
+!
+!
+!
+no ip domain lookup
+!
+!
+!
+ip dhcp snooping vlan 1,200-1000
+no ip dhcp snooping information option
+ip dhcp snooping database flash:/dhcp-bindings
+ip dhcp snooping database write-delay 43200
+ip dhcp snooping
+login on-success log
+!
+!
+!
+!
+!
+!
+vtp mode transparent
+epm logging
+authentication mac-move permit
+authentication logging verbose
+access-session acl default passthrough
+mab request format attribute 32 vlan access-vlan
+device-tracking tracking auto-source
+!
+!
+!
+dot1x system-auth-control
+dot1x critical eapol
+!
+!
+diagnostic bootup level minimal
+!
+spanning-tree mode rapid-pvst
+spanning-tree logging
+spanning-tree extend system-id
+spanning-tree vlan 1-4094 priority 8192
+!
+errdisable recovery cause link-flap
+errdisable recovery interval 900
+!
+!
+redundancy
+ mode sso
+!
+!
+!
+!
+!
+transceiver type all
+ monitoring
+!
+vlan 2
+ name mgmt
+!
+vlan 34
+ name vlan-34
+!
+vlan 100
+ name vlan-100
+!
+vlan 101
+ name vlan-101
+!
+vlan 102
+ name vlan-102
+!
+vlan 103
+ name vlan-103
+!
+vlan 104
+ name vlan-104
+!
+vlan 105
+ name vlan-105
+!
+vlan 106
+ name vlan-106
+!
+vlan 110
+ name vlan-110
+!
+vlan 111
+ name vlan-111
+!
+vlan 112
+ name vlan-112
+!
+vlan 113
+ name vlan-113
+!
+vlan 114
+ name v-w-customer-7
+!
+vlan 115
+ name v-w-customer-9
+!
+vlan 116
+ name v-w-customer-4
+!
+vlan 121
+ name vlan-121
+!
+vlan 122
+ name vlan-122
+!
+vlan 123
+ name vlan-123
+!
+vlan 124
+ name vlan-124
+!
+vlan 125
+ name vlan-125
+!
+vlan 126
+ name vlan-126
+!
+vlan 127
+ name vlan-127
+!
+vlan 130
+ name vlan-130
+!
+vlan 131
+ name vlan-131
+!
+vlan 133
+ name vlan-133
+!
+vlan 134
+ name vlan-134
+!
+vlan 138
+ name vlan-138
+!
+vlan 139
+ name vlan-139
+!
+vlan 140
+ name vlan-140
+!
+vlan 141
+ name vlan-141
+!
+vlan 142
+ name vlan-142
+!
+vlan 143
+ name vlan-143
+!
+vlan 148
+ name vlan-148
+!
+vlan 158
+ name vlan-158
+!
+vlan 161
+ name vlan-161
+!
+vlan 162
+ name vlan-162
+!
+vlan 164
+ name vlan-164
+!
+vlan 171
+ name vlan-171
+!
+vlan 172
+ name vlan-172
+!
+vlan 174
+ name vlan-174
+!
+vlan 175
+ name vlan-175
+!
+vlan 176
+ name vlan-176
+!
+vlan 181
+ name vlan-181
+!
+vlan 182
+ name vlan-182
+!
+vlan 184
+ name vlan-184
+!
+vlan 188
+ name vlan-188
+!
+vlan 189
+ name vlan-189
+!
+vlan 195
+ name v-w-customer-2
+!
+vlan 196
+ name v-k-customer-2
+!
+vlan 221
+ name vlan-221
+!
+vlan 300
+ name vlan-300
+!
+vlan 370
+ name customer-7-data
+!
+vlan 380
+ name customer-7-voice
+!
+vlan 390
+ name customer-7-print
+!
+vlan 500
+ name vlan-500
+!
+vlan 600
+ name vlan-600
+!
+vlan 621
+ name vlan-621
+!
+vlan 640
+ name customer-3
+!
+vlan 685
+ name customer-4
+!
+vlan 700
+ name customer-2
+!
+vlan 875
+ name customer-9
+!
+vlan 900
+ name vlan-900
+!
+vlan 901
+ name vlan-901
+!
+vlan 1160
+ name vlan-1160
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+interface Loopback10
+ ip address 10.255.115.241 255.255.255.255
+!
+interface GigabitEthernet0/0
+ vrf forwarding Mgmt-vrf
+ no ip address
+ shutdown
+ negotiation auto
+!
+interface TenGigabitEthernet1/0/1
+ description Gi0/0/3@ce-01
+ switchport trunk native vlan 181
+ switchport trunk allowed vlan 110-116,148,175,181,184,195
+ switchport mode trunk
+ storm-control broadcast level 1.00
+ ip dhcp snooping trust
+!
+interface TenGigabitEthernet1/0/2
+ description gi1/0/2@cr-01
+ switchport trunk native vlan 188
+ switchport trunk allowed vlan 1,2,138-143,158,164,176,188,189,196,300,500,621
+ switchport trunk allowed vlan add 700,900,1160
+ switchport mode trunk
+ storm-control broadcast level 1.00
+ ip dhcp snooping trust
+!
+interface TenGigabitEthernet1/0/3
+ description gig0/3@switch-01
+ switchport trunk allowed vlan 1,2,300,370,380,390,600,621,685,700,875,900,1160
+ switchport mode trunk
+ storm-control broadcast level 1.00
+ ip dhcp snooping trust
+!
+interface TenGigabitEthernet1/0/4
+ switchport mode trunk
+ shutdown
+ storm-control broadcast level 1.00
+ ip dhcp snooping trust
+!
+interface TenGigabitEthernet1/0/5
+ description --> Ten1/1/1@switch02
+ switchport trunk allowed vlan 1,2,300,370,380,390,500,621,685,700,875,900
+ switchport mode trunk
+ storm-control broadcast level 1.00
+ ip dhcp snooping trust
+!
+interface TenGigabitEthernet1/0/6
+ description Gi0/1@switch03
+ switchport trunk allowed vlan 1,2,300,370,380,390,500,621,685,700,875,900
+ switchport mode trunk
+ storm-control broadcast level 1.00
+ ip dhcp snooping trust
+!
+interface TenGigabitEthernet1/0/7
+ description gi0/1@switch04
+ switchport trunk allowed vlan 1,2,300,370,380,390,500,621,685,700,875,900
+ switchport mode trunk
+ storm-control broadcast level 1.00
+ ip dhcp snooping trust
+!
+interface TenGigabitEthernet1/0/8
+ description Gi8@cr02
+ switchport trunk native vlan 171
+ switchport trunk allowed vlan 171,172,174
+ switchport mode trunk
+ storm-control broadcast level 1.00
+ ip dhcp snooping trust
+!
+interface TenGigabitEthernet1/0/9
+ description Gi0/1@switch05
+ switchport trunk allowed vlan 1,2,300,370,380,390,500,621,685,700,875,900
+ switchport mode trunk
+ storm-control broadcast level 1.00
+ ip dhcp snooping trust
+!
+interface TenGigabitEthernet1/0/10
+ description Gi8@cr-03
+ switchport trunk native vlan 161
+ switchport trunk allowed vlan 1,2,161,162,1002-1005
+ switchport mode trunk
+ storm-control broadcast level 1.00
+ ip dhcp snooping trust
+!
+interface TenGigabitEthernet1/0/11
+ description Gi1/0/24@cr-04
+ switchport trunk native vlan 182
+ switchport trunk allowed vlan 2,133,134,182,900
+ switchport mode trunk
+ storm-control broadcast level 1.00
+ ip dhcp snooping trust
+!
+interface TenGigabitEthernet1/0/12
+ description fa0@cr-05
+ switchport trunk native vlan 100
+ switchport trunk allowed vlan 100-106,700
+ switchport mode trunk
+ storm-control broadcast level 1.00
+ ip dhcp snooping trust
+!
+interface TenGigabitEthernet1/0/13
+ description Gi8@cr-06
+ switchport trunk native vlan 121
+ switchport trunk allowed vlan 121-127
+ switchport mode trunk
+ storm-control broadcast level 1.00
+ ip dhcp snooping trust
+!
+interface TenGigabitEthernet1/0/14
+ description gi1/1/1@switch06
+ switchport trunk native vlan 2
+ switchport trunk allowed vlan 1,2,300,370,380,390,685,875,900
+ switchport mode trunk
+ shutdown
+ storm-control broadcast level 1.00
+ ip dhcp snooping trust
+!
+interface TenGigabitEthernet1/0/15
+ description gi1/1/1@switch07
+ switchport trunk allowed vlan 1,2,300,370,380,390,621,685,875,900
+ switchport mode trunk
+ storm-control broadcast level 1.00
+ ip dhcp snooping trust
+!
+interface TenGigabitEthernet1/0/16
+ description gi1/1/1@switch08
+ switchport trunk native vlan 2
+ switchport mode trunk
+ shutdown
+ storm-control broadcast level 1.00
+ ip dhcp snooping trust
+!
+interface TenGigabitEthernet1/0/17
+ shutdown
+ storm-control broadcast level 1.00
+ ip dhcp snooping trust
+!
+interface TenGigabitEthernet1/0/18
+ description Gi1/1/1@switch09
+ switchport trunk allowed vlan 1,2,300,370,380,390,685,875,900
+ switchport mode trunk
+ storm-control broadcast level 1.00
+ ip dhcp snooping trust
+!
+interface TenGigabitEthernet1/0/19
+ shutdown
+ storm-control broadcast level 1.00
+ ip dhcp snooping trust
+!
+interface TenGigabitEthernet1/0/20
+ switchport mode trunk
+ storm-control broadcast level 1.00
+ ip dhcp snooping trust
+!
+interface TenGigabitEthernet1/0/21
+ description gi1/1/2@switch10
+ switchport trunk allowed vlan 1,2,300,370,380,390,685,875,900
+ switchport mode trunk
+ storm-control broadcast level 1.00
+ ip dhcp snooping trust
+!
+interface TenGigabitEthernet1/0/22
+ description Gi1/1/1@switch11
+ switchport mode trunk
+ ip dhcp snooping trust
+!
+interface TenGigabitEthernet1/0/23
+ shutdown
+!
+interface TenGigabitEthernet1/0/24
+ shutdown
+!
+interface TenGigabitEthernet1/0/25
+ shutdown
+!
+interface TenGigabitEthernet1/0/26
+ shutdown
+!
+interface TenGigabitEthernet1/0/27
+ shutdown
+!
+interface TenGigabitEthernet1/0/28
+ shutdown
+!
+interface TenGigabitEthernet1/0/29
+ shutdown
+!
+interface TenGigabitEthernet1/0/30
+ shutdown
+!
+interface TenGigabitEthernet1/0/31
+ shutdown
+!
+interface TenGigabitEthernet1/0/32
+ shutdown
+!
+interface TenGigabitEthernet1/0/33
+ shutdown
+!
+interface TenGigabitEthernet1/0/34
+ shutdown
+!
+interface TenGigabitEthernet1/0/35
+ shutdown
+!
+interface TenGigabitEthernet1/0/36
+ shutdown
+!
+interface TenGigabitEthernet1/0/37
+ shutdown
+!
+interface TenGigabitEthernet1/0/38
+ shutdown
+!
+interface TenGigabitEthernet1/0/39
+ shutdown
+!
+interface TenGigabitEthernet1/0/40
+ shutdown
+!
+interface TenGigabitEthernet1/0/41
+ shutdown
+!
+interface TenGigabitEthernet1/0/42
+ shutdown
+!
+interface TenGigabitEthernet1/0/43
+ shutdown
+!
+interface TenGigabitEthernet1/0/44
+ shutdown
+!
+interface TenGigabitEthernet1/0/45
+ switchport access vlan 600
+ switchport mode access
+ switchport port-security maximum 5
+ switchport port-security violation restrict
+ switchport port-security aging time 2
+ switchport port-security aging type inactivity
+ switchport port-security
+ storm-control broadcast level 0.50
+ spanning-tree portfast
+ spanning-tree bpduguard enable
+!
+interface TenGigabitEthernet1/0/46
+ switchport access vlan 621
+ switchport mode access
+ storm-control broadcast level 1.00
+ ip dhcp snooping trust
+!
+interface TenGigabitEthernet1/0/47
+ switchport access vlan 901
+ switchport mode access
+ switchport port-security maximum 5
+ switchport port-security violation restrict
+ switchport port-security
+ spanning-tree portfast
+ spanning-tree bpduguard enable
+!
+interface TenGigabitEthernet1/0/48
+ switchport mode access
+ switchport voice vlan 900
+ switchport port-security maximum 5
+ switchport port-security violation restrict
+ switchport port-security aging time 2
+ switchport port-security aging type inactivity
+ switchport port-security
+ shutdown
+ storm-control broadcast level 0.50
+ spanning-tree portfast
+ spanning-tree bpduguard enable
+!
+interface TenGigabitEthernet1/1/1
+ shutdown
+!
+interface TenGigabitEthernet1/1/2
+ shutdown
+!
+interface TenGigabitEthernet1/1/3
+ shutdown
+!
+interface TenGigabitEthernet1/1/4
+ shutdown
+!
+interface TenGigabitEthernet1/1/5
+ shutdown
+!
+interface TenGigabitEthernet1/1/6
+ shutdown
+!
+interface TenGigabitEthernet1/1/7
+ shutdown
+!
+interface TenGigabitEthernet1/1/8
+ shutdown
+!
+interface TenGigabitEthernet1/1/9
+ shutdown
+!
+interface TenGigabitEthernet1/1/10
+ shutdown
+!
+interface TenGigabitEthernet1/1/11
+ shutdown
+!
+interface TenGigabitEthernet1/1/12
+ shutdown
+!
+interface TenGigabitEthernet1/1/13
+ shutdown
+!
+interface TenGigabitEthernet1/1/14
+ shutdown
+!
+interface TenGigabitEthernet1/1/15
+ shutdown
+!
+interface TenGigabitEthernet1/1/16
+ shutdown
+!
+interface FortyGigabitEthernet1/1/1
+ shutdown
+!
+interface FortyGigabitEthernet1/1/2
+ shutdown
+!
+interface FortyGigabitEthernet1/1/3
+ shutdown
+!
+interface FortyGigabitEthernet1/1/4
+ shutdown
+!
+interface Vlan1
+ ip vrf forwarding customer-10
+ ip address 172.21.227.2 255.255.255.0
+ ip helper-address 10.50.214.100
+ ip helper-address 110.50.214.101
+ standby 1 ip 172.21.227.1
+ standby 1 priority 110
+ standby 1 preempt
+!
+interface Vlan2
+ ip address 10.252.14.130 255.255.255.128 secondary
+ ip address 10.253.115.226 255.255.255.224 secondary
+ ip address 10.253.13.2 255.255.255.240
+ standby 4 ip 10.253.13.1
+ standby 4 priority 110
+ standby 4 preempt
+ standby 8 ip 10.252.14.129
+ standby 8 priority 110
+ standby 8 preempt
+ standby 9 ip 10.253.115.225
+ standby 9 priority 110
+ standby 9 preempt
+!
+interface Vlan100
+ ip address 10.253.244.85 255.255.255.252
+ ip ospf network point-to-point
+!
+interface Vlan101
+ ip vrf forwarding customer-10
+ ip address 172.21.254.41 255.255.255.252
+ ip ospf network point-to-point
+!
+interface Vlan102
+ ip vrf forwarding customer-3
+ ip address 10.39.181.113 255.255.255.252
+ ip ospf network point-to-point
+!
+interface Vlan103
+ ip vrf forwarding customer-7
+ ip address 10.159.245.121 255.255.255.252
+ ip ospf network point-to-point
+!
+interface Vlan104
+ ip vrf forwarding customer-9
+ ip address 10.50.250.161 255.255.255.252
+ ip ospf network point-to-point
+!
+interface Vlan105
+ ip vrf forwarding customer-4
+ ip address 10.68.126.253 255.255.255.252
+ ip ospf network point-to-point
+!
+interface Vlan106
+ ip vrf forwarding customer-2
+ ip address 10.18.241.97 255.255.255.252
+ ip ospf network point-to-point
+!
+interface Vlan110
+ ip vrf forwarding customer-10
+ ip address 172.21.253.110 255.255.255.252
+ ip ospf network point-to-point
+!
+interface Vlan111
+ ip vrf forwarding customer-8
+ ip address 10.26.255.222 255.255.255.252
+ ip ospf network point-to-point
+!
+interface Vlan112
+ ip vrf forwarding customer-6
+ ip address 10.37.255.254 255.255.255.252
+ ip ospf network point-to-point
+!
+interface Vlan113
+ ip vrf forwarding customer-3
+ ip address 10.39.181.126 255.255.255.252
+ ip ospf network point-to-point
+!
+interface Vlan114
+ ip vrf forwarding customer-7
+ ip address 10.159.245.134 255.255.255.252
+ ip ospf network point-to-point
+!
+interface Vlan115
+ ip vrf forwarding customer-9
+ ip address 10.50.250.174 255.255.255.252
+ ip ospf network point-to-point
+!
+interface Vlan116
+ ip vrf forwarding customer-4
+ ip address 10.68.127.10 255.255.255.252
+ ip ospf network point-to-point
+!
+interface Vlan121
+ ip address 10.252.233.161 255.255.255.252
+ ip ospf network point-to-point
+!
+interface Vlan122
+ ip vrf forwarding customer-10
+ ip address 172.21.226.41 255.255.255.252
+ ip ospf network point-to-point
+!
+interface Vlan123
+ ip vrf forwarding customer-2
+ ip address 10.18.241.241 255.255.255.252
+ ip ospf network point-to-point
+!
+interface Vlan124
+ ip vrf forwarding customer-3
+ ip address 10.39.181.109 255.255.255.252
+ ip ospf network point-to-point
+!
+interface Vlan125
+ ip vrf forwarding customer-7
+ ip address 10.159.245.117 255.255.255.252
+ ip ospf network point-to-point
+!
+interface Vlan126
+ ip vrf forwarding customer-9
+ ip address 10.50.250.157 255.255.255.252
+ ip ospf network point-to-point
+!
+interface Vlan127
+ ip vrf forwarding customer-4
+ ip address 10.68.126.249 255.255.255.252
+ ip ospf network point-to-point
+!
+interface Vlan133
+ ip vrf forwarding customer-10
+ ip address 172.21.19.65 255.255.255.252
+ ip ospf network point-to-point
+!
+interface Vlan134
+ ip vrf forwarding customer-6
+ ip address 10.129.65.17 255.255.255.252
+ ip ospf network point-to-point
+!
+interface Vlan138
+ ip vrf forwarding customer-8
+ ip address 10.26.255.229 255.255.255.252
+ ip ospf network point-to-point
+!
+interface Vlan139
+ ip vrf forwarding customer-6
+ ip address 10.37.255.245 255.255.255.252
+ ip ospf network point-to-point
+!
+interface Vlan140
+ ip vrf forwarding customer-3
+ ip address 10.39.181.117 255.255.255.252
+ ip ospf network point-to-point
+!
+interface Vlan141
+ ip vrf forwarding customer-7
+ ip address 10.159.245.125 255.255.255.252
+ ip ospf network point-to-point
+!
+interface Vlan142
+ ip vrf forwarding customer-9
+ ip address 10.50.250.165 255.255.255.252
+ ip ospf network point-to-point
+!
+interface Vlan143
+ ip vrf forwarding customer-4
+ ip address 10.68.127.1 255.255.255.252
+ ip ospf network point-to-point
+!
+interface Vlan148
+ ip vrf forwarding customer-11
+ ip address 10.54.127.198 255.255.255.252
+ ip ospf network point-to-point
+!
+interface Vlan158
+ ip vrf forwarding customer-11
+ ip address 10.54.125.121 255.255.255.252
+ ip ospf network point-to-point
+!
+interface Vlan161
+ ip address 10.253.203.105 255.255.255.252
+ ip ospf network point-to-point
+!
+interface Vlan162
+ ip vrf forwarding customer-10
+ ip address 172.21.240.241 255.255.255.252
+ ip ospf network point-to-point
+!
+interface Vlan164
+ ip vrf forwarding customer-1
+ ip address 10.239.248.73 255.255.255.252
+ ip ospf network point-to-point
+!
+interface Vlan171
+ description mgmt
+ ip address 10.253.210.205 255.255.255.252
+ ip ospf network point-to-point
+!
+interface Vlan172
+ ip vrf forwarding customer-10
+ ip address 172.21.252.53 255.255.255.252
+ ip ospf network point-to-point
+!
+interface Vlan174
+ ip vrf forwarding customer-1
+ ip address 10.239.248.133 255.255.255.252
+ ip ospf network point-to-point
+!
+interface Vlan175
+ ip vrf forwarding customer-5
+ ip address 10.35.207.242 255.255.255.252
+ ip ospf network point-to-point
+!
+interface Vlan176
+ ip vrf forwarding customer-5
+ ip address 10.35.207.237 255.255.255.252
+ ip ospf network point-to-point
+!
+interface Vlan181
+ ip address 10.253.244.70 255.255.255.252
+ ip ospf network point-to-point
+!
+interface Vlan182
+ ip address 10.252.219.153 255.255.255.252
+ ip ospf network point-to-point
+!
+interface Vlan184
+ ip vrf forwarding customer-1
+ ip address 10.239.253.182 255.255.255.252
+ ip ospf network point-to-point
+!
+interface Vlan188
+ ip address 10.253.244.73 255.255.255.252
+ ip ospf network point-to-point
+!
+interface Vlan189
+ ip vrf forwarding customer-10
+ ip address 172.21.253.117 255.255.255.252
+ ip ospf network point-to-point
+!
+interface Vlan195
+ ip vrf forwarding customer-2
+ ip address 10.18.246.102 255.255.255.252
+ ip ospf network point-to-point
+!
+interface Vlan196
+ ip vrf forwarding customer-2
+ ip address 10.18.246.93 255.255.255.252
+ ip ospf network point-to-point
+!
+interface Vlan300
+ ip vrf forwarding customer-10
+ ip address 172.21.241.130 255.255.255.128
+ ip helper-address 172.21.214.112
+ ip helper-address 172.21.214.111
+ standby 10 ip 172.21.241.129
+ standby 10 priority 110
+ standby 10 preempt
+!
+interface Vlan370
+ ip vrf forwarding customer-7
+ ip address 10.146.108.2 255.255.254.0
+ ip helper-address 10.157.128.28
+ ip helper-address 10.157.128.52
+ standby 12 ip 10.146.108.1
+ standby 12 priority 110
+ standby 12 preempt
+!
+interface Vlan380
+ ip vrf forwarding customer-7
+ ip address 10.153.82.2 255.255.254.0
+ ip helper-address 10.157.128.28
+ ip helper-address 10.157.128.52
+ standby 13 ip 10.153.82.1
+ standby 13 priority 110
+ standby 13 preempt
+!
+interface Vlan390
+ ip vrf forwarding customer-7
+ ip address 10.156.135.226 255.255.255.224
+ ip helper-address 10.157.128.28
+ ip helper-address 10.157.128.52
+ standby 14 ip 10.156.135.225
+ standby 14 priority 110
+ standby 14 preempt
+!
+interface Vlan500
+ ip vrf forwarding customer-8
+ ip address 10.26.54.162 255.255.255.240
+ standby 2 ip 10.26.54.161
+ standby 2 priority 110
+ standby 2 preempt
+!
+interface Vlan600
+ ip vrf forwarding customer-6
+ ip address 10.81.71.2 255.255.255.224 secondary
+ ip address 10.49.65.193 255.255.255.248
+ ip helper-address 10.81.67.252
+ ip helper-address 10.241.67.252
+ standby 11 ip 10.81.71.1
+ standby 11 priority 110
+ standby 11 preempt
+!
+interface Vlan621
+ ip vrf forwarding customer-5
+ ip address 10.35.204.66 255.255.255.192
+ standby 6 ip 10.35.204.65
+ standby 6 priority 110
+ standby 6 preempt
+!
+interface Vlan640
+ ip vrf forwarding customer-3
+ ip address 10.66.53.130 255.255.255.192
+ ip helper-address 10.255.128.100
+ ip helper-address 10.255.128.108
+ standby 15 ip 10.66.53.129
+ standby 15 priority 110
+ standby 15 preempt
+!
+interface Vlan685
+ ip vrf forwarding customer-4
+ ip address 10.68.14.2 255.255.255.128
+ ip helper-address 10.174.0.6
+ ip helper-address 10.174.0.38
+ standby 16 ip 10.68.14.1
+ standby 16 priority 110
+ standby 16 preempt
+!
+interface Vlan700
+ ip vrf forwarding customer-2
+ ip address 10.18.54.66 255.255.255.128
+ ip helper-address 10.255.128.84
+ ip helper-address 10.255.128.92
+ standby 5 ip 10.18.54.65
+ standby 5 priority 110
+ standby 5 preempt
+!
+interface Vlan875
+ ip vrf forwarding customer-9
+ ip address 10.50.87.130 255.255.255.128
+ ip helper-address 10.174.0.6
+ ip helper-address 10.174.0.38
+ standby 17 ip 10.50.87.129
+ standby 17 priority 110
+ standby 17 preempt
+!
+interface Vlan900
+ ip vrf forwarding customer-10
+ ip address 10.191.58.2 255.255.254.0
+ ip helper-address 172.21.214.112
+ ip helper-address 172.21.214.111
+ standby 3 ip 10.191.58.1
+ standby 3 priority 110
+ standby 3 preempt
+!
+interface Vlan901
+ ip vrf forwarding customer-10
+ ip address 10.191.253.145 255.255.255.252
+!
+interface Vlan1160
+ ip vrf forwarding customer-11
+ ip address 10.54.2.2 255.255.255.192
+ standby 7 ip 10.54.2.1
+ standby 7 priority 110
+ standby 7 preempt
+!
+router ospf 3400 vrf customer-5
+ passive-interface Vlan621
+ network 10.35.204.64 0.0.0.63 area 10.35.204.0
+ network 10.35.207.237 0.0.0.0 area 10.35.204.0
+ network 10.35.207.242 0.0.0.0 area 10.35.204.0
+!
+router ospf 700 vrf customer-1
+ network 10.239.248.73 0.0.0.0 area 10.239.1.0
+ network 10.239.248.133 0.0.0.0 area 10.239.1.0
+ network 10.239.253.182 0.0.0.0 area 10.239.1.0
+!
+router ospf 1300 vrf customer-2
+ passive-interface Vlan700
+ network 10.18.54.0 0.0.0.127 area 1.1.1.1
+ network 10.18.241.97 0.0.0.0 area 1.1.1.1
+ network 10.18.241.241 0.0.0.0 area 1.1.1.1
+ network 10.18.246.93 0.0.0.0 area 1.1.1.1
+ network 10.18.246.102 0.0.0.0 area 1.1.1.1
+!
+router ospf 630 vrf customer-11
+ passive-interface Vlan1160
+ network 10.54.2.2 0.0.0.0 area 1.1.1.1
+ network 10.54.2.0 0.0.0.63 area 1.1.1.1
+ network 10.54.125.121 0.0.0.0 area 1.1.1.1
+ network 10.54.125.130 0.0.0.0 area 1.1.1.1
+ network 10.54.127.198 0.0.0.0 area 1.1.1.1
+!
+router ospf 1000 vrf customer-6
+ passive-interface Vlan600
+ network 10.37.255.245 0.0.0.0 area 10.37.1.0
+ network 10.37.255.254 0.0.0.0 area 10.37.1.0
+ network 10.49.65.193 0.0.0.0 area 10.37.1.0
+ network 10.81.71.0 0.0.0.31 area 10.37.1.0
+ network 10.129.65.17 0.0.0.0 area 10.37.1.0
+!
+router ospf 500 vrf customer-8
+ passive-interface Vlan500
+ network 10.26.54.160 0.0.0.15 area 10.26.1.0
+ network 10.26.255.222 0.0.0.0 area 10.26.1.0
+ network 10.26.255.229 0.0.0.0 area 10.26.1.0
+!
+router ospf 100 vrf customer-10
+ passive-interface Vlan1
+ passive-interface Vlan300
+ passive-interface Vlan900
+ network 10.191.58.2 0.0.0.0 area 10.21.1.0
+ network 10.191.253.140 0.0.0.3 area 172.21.1.0
+ network 10.191.253.145 0.0.0.0 area 172.21.1.0
+ network 172.21.19.65 0.0.0.0 area 172.21.1.0
+ network 172.21.202.97 0.0.0.0 area 172.21.1.0
+ network 172.21.226.41 0.0.0.0 area 172.21.1.0
+ network 172.21.227.0 0.0.0.255 area 172.21.1.0
+ network 172.21.240.241 0.0.0.0 area 172.21.1.0
+ network 172.21.241.128 0.0.0.127 area 172.21.1.0
+ network 172.21.252.53 0.0.0.0 area 172.21.1.0
+ network 172.21.253.110 0.0.0.0 area 172.21.1.0
+ network 172.21.253.117 0.0.0.0 area 172.21.1.0
+ network 172.21.254.41 0.0.0.0 area 172.21.1.0
+!
+router ospf 3700 vrf customer-3
+ passive-interface Vlan640
+ network 10.39.181.109 0.0.0.0 area 1.1.1.1
+ network 10.39.181.113 0.0.0.0 area 1.1.1.1
+ network 10.39.181.117 0.0.0.0 area 1.1.1.1
+ network 10.39.181.126 0.0.0.0 area 1.1.1.1
+ network 10.66.53.128 0.0.0.63 area 1.1.1.1
+!
+router ospf 940 vrf customer-7
+ passive-interface Vlan370
+ passive-interface Vlan380
+ passive-interface Vlan390
+ network 10.146.108.0 0.0.1.255 area 1.1.1.1
+ network 10.153.82.0 0.0.1.255 area 1.1.1.1
+ network 10.156.135.224 0.0.0.31 area 1.1.1.1
+ network 10.159.245.117 0.0.0.0 area 1.1.1.1
+ network 10.159.245.121 0.0.0.0 area 1.1.1.1
+ network 10.159.245.125 0.0.0.0 area 1.1.1.1
+ network 10.159.245.134 0.0.0.0 area 1.1.1.1
+!
+router ospf 950 vrf customer-9
+ passive-interface Vlan875
+ network 10.50.87.128 0.0.0.127 area 1.1.1.1
+ network 10.50.250.157 0.0.0.0 area 1.1.1.1
+ network 10.50.250.161 0.0.0.0 area 1.1.1.1
+ network 10.50.250.165 0.0.0.0 area 1.1.1.1
+ network 10.50.250.174 0.0.0.0 area 1.1.1.1
+!
+router ospf 1450 vrf customer-4
+ passive-interface Vlan685
+ network 10.68.14.0 0.0.0.127 area 1.1.1.1
+ network 10.68.126.249 0.0.0.0 area 1.1.1.1
+ network 10.68.126.253 0.0.0.0 area 1.1.1.1
+ network 10.68.127.1 0.0.0.0 area 1.1.1.1
+ network 10.68.127.10 0.0.0.0 area 1.1.1.1
+!
+router ospf 25325
+ passive-interface Vlan2
+ network 10.252.14.130 0.0.0.0 area 10.253.1.0
+ network 10.252.219.153 0.0.0.0 area 10.253.1.0
+ network 10.252.233.161 0.0.0.0 area 10.253.1.0
+ network 10.253.13.0 0.0.0.15 area 10.253.1.0
+ network 10.253.115.224 0.0.0.31 area 10.253.1.0
+ network 10.253.203.105 0.0.0.0 area 10.253.1.0
+ network 10.253.210.205 0.0.0.0 area 10.253.1.0
+ network 10.253.244.70 0.0.0.0 area 10.253.1.0
+ network 10.253.244.73 0.0.0.0 area 10.253.1.0
+ network 10.253.244.85 0.0.0.0 area 10.253.1.0
+ network 10.255.115.241 0.0.0.0 area 10.253.1.0
+!
+ip forward-protocol nd
+no ip http server
+no ip http secure-server
+ip tacacs source-interface Loopback10
+ip ssh version 2
+ip scp server enable
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+control-plane
+ service-policy input system-cpp-policy
+!
+!
+line con 0
+ exec-timeout 20 0
+ privilege level 15
+ login authentication console
+ stopbits 1
+line aux 0
+ stopbits 1
+line vty 0 4
+ exec-timeout 20 0
+ logging synchronous
+ transport input ssh
+line vty 5 15
+ exec-timeout 20 0
+ transport input ssh
+!
+ntp logging
+!
+!
+!
+!
+!
+!
+end
