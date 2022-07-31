@@ -1,3 +1,3 @@
-module github.com/letsu/RunParse
+module github.com/Letsu/jap
 
 go 1.18
