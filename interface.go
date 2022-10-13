@@ -78,6 +78,7 @@ func ParseInterface(part string) (CiscoInterface, error) {
 		tag := field.Tag.Get("cmd")
 		if tag != "" {
 			re = regexp.MustCompile(tag)
+			// @todo check if no is with the command!
 			data := re.FindStringSubmatch(part)
 			if len(data) > 1 && field.Type.Kind() == reflect.String {
 				reflect.ValueOf(&inter).Elem().Field(i).SetString(data[1])
@@ -90,6 +91,13 @@ func ParseInterface(part string) (CiscoInterface, error) {
 			} else if len(data) == 1 && field.Type.Kind() == reflect.Bool {
 				reflect.ValueOf(&inter).Elem().Field(i).SetBool(true)
 			}
+		}
+	}
+
+	//Check if Routed Port, Trunk or Access
+	if !inter.AccessPort && !inter.Trunk {
+		if !strings.Contains(part, "ip address") && !strings.Contains(part, "no switchport") {
+			inter.AccessPort = true
 		}
 	}
 
