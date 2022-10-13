@@ -1,7 +1,3 @@
-!
-! Last configuration change at 16:06:56 met Mon May 30 2022 by user
-! NVRAM config last updated at 05:19:09 met Wed Jun 1 2022 by user
-!
 version 16.9
 no service pad
 service timestamps debug datetime msec localtime
@@ -41,37 +37,37 @@ switch 1 provision ws-c3850-48xs
 !
 !
 ip vrf customer-1
- rd 25325:700
+ rd 3:700
 !
 ip vrf customer-2
- rd 25325:1300
+ rd 3:1300
 !
 ip vrf customer-3
- rd 25325:3700
+ rd 3:3700
 !
 ip vrf customer-4
- rd 25325:1450
+ rd 3:1450
 !
 ip vrf customer-5
- rd 25325:3400
+ rd 3:3400
 !
 ip vrf customer-6
- rd 25325:1000
+ rd 3:1000
 !
 ip vrf customer-7
- rd 25325:940
+ rd 3:940
 !
 ip vrf customer-8
- rd 25325:500
+ rd 3:500
 !
 ip vrf customer-9
- rd 25325:950
+ rd 3:950
 !
 ip vrf customer-10
- rd 25325:100
+ rd 3:100
 !
 ip vrf customer-11
- rd 25325:630
+ rd 3:630
 !
 !
 !
@@ -337,7 +333,7 @@ vlan 1160
 !
 !
 interface Loopback10
- ip address 10.255.115.241 255.255.255.255
+ ip address 192.255.0.1 255.255.255.255
 !
 interface GigabitEthernet0/0
  vrf forwarding Mgmt-vrf
@@ -354,7 +350,7 @@ interface TenGigabitEthernet1/0/1
  ip dhcp snooping trust
 !
 interface TenGigabitEthernet1/0/2
- description gi1/0/2@cr-01
+ description gi1/0/2@router-01
  switchport trunk native vlan 188
  switchport trunk allowed vlan 1,2,138-143,158,164,176,188,189,196,300,500,621
  switchport trunk allowed vlan add 700,900,1160
@@ -412,7 +408,7 @@ interface TenGigabitEthernet1/0/9
  ip dhcp snooping trust
 !
 interface TenGigabitEthernet1/0/10
- description Gi8@cr-03
+ description Gi8@router-03
  switchport trunk native vlan 161
  switchport trunk allowed vlan 1,2,161,162,1002-1005
  switchport mode trunk
@@ -420,7 +416,7 @@ interface TenGigabitEthernet1/0/10
  ip dhcp snooping trust
 !
 interface TenGigabitEthernet1/0/11
- description Gi1/0/24@cr-04
+ description Gi1/0/24@router-04
  switchport trunk native vlan 182
  switchport trunk allowed vlan 2,133,134,182,900
  switchport mode trunk
@@ -428,7 +424,7 @@ interface TenGigabitEthernet1/0/11
  ip dhcp snooping trust
 !
 interface TenGigabitEthernet1/0/12
- description fa0@cr-05
+ description fa0@router-05
  switchport trunk native vlan 100
  switchport trunk allowed vlan 100-106,700
  switchport mode trunk
@@ -436,7 +432,7 @@ interface TenGigabitEthernet1/0/12
  ip dhcp snooping trust
 !
 interface TenGigabitEthernet1/0/13
- description Gi8@cr-06
+ description Gi8@router-06
  switchport trunk native vlan 121
  switchport trunk allowed vlan 121-127
  switchport mode trunk
@@ -669,475 +665,308 @@ interface FortyGigabitEthernet1/1/4
 !
 interface Vlan1
  ip vrf forwarding customer-10
- ip address 172.21.227.2 255.255.255.0
- ip helper-address 10.50.214.100
- ip helper-address 110.50.214.101
- standby 1 ip 172.21.227.1
+ ip address 192.168.0.2 255.255.255.0
+ ip helper-address 172.24.0.2
+ ip helper-address 172.24.1.2
+ standby 1 ip 192.168.0.1
  standby 1 priority 110
  standby 1 preempt
 !
 interface Vlan2
- ip address 10.252.14.130 255.255.255.128 secondary
- ip address 10.253.115.226 255.255.255.224 secondary
- ip address 10.253.13.2 255.255.255.240
- standby 4 ip 10.253.13.1
+ ip address 192.168.10.2 255.255.255.0 secondary
+ ip address 192.168.11.2 255.255.255.0 secondary
+ ip address 192.168.12.2 255.255.255.0
+ standby 4 ip 192.168.10.1
  standby 4 priority 110
  standby 4 preempt
- standby 8 ip 10.252.14.129
+ standby 8 ip 192.168.11.1
  standby 8 priority 110
  standby 8 preempt
- standby 9 ip 10.253.115.225
+ standby 9 ip 192.168.11.1
  standby 9 priority 110
  standby 9 preempt
 !
 interface Vlan100
- ip address 10.253.244.85 255.255.255.252
+ ip address 192.168.15.1 255.255.255.0
  ip ospf network point-to-point
 !
 interface Vlan101
  ip vrf forwarding customer-10
- ip address 172.21.254.41 255.255.255.252
+ ip address 192.168.16.1 255.255.255.0
  ip ospf network point-to-point
 !
 interface Vlan102
  ip vrf forwarding customer-3
- ip address 10.39.181.113 255.255.255.252
+ ip address 192.168.17.1 255.255.255.0
  ip ospf network point-to-point
 !
 interface Vlan103
  ip vrf forwarding customer-7
- ip address 10.159.245.121 255.255.255.252
+ ip address 192.168.18.1 255.255.255.0
  ip ospf network point-to-point
 !
 interface Vlan104
  ip vrf forwarding customer-9
- ip address 10.50.250.161 255.255.255.252
+ ip address 192.168.19.1 255.255.255.0
  ip ospf network point-to-point
 !
 interface Vlan105
  ip vrf forwarding customer-4
- ip address 10.68.126.253 255.255.255.252
+ ip address 192.168.20.1 255.255.255.0
  ip ospf network point-to-point
 !
 interface Vlan106
  ip vrf forwarding customer-2
- ip address 10.18.241.97 255.255.255.252
+ ip address 192.168.21.1 255.255.255.0
  ip ospf network point-to-point
 !
 interface Vlan110
  ip vrf forwarding customer-10
- ip address 172.21.253.110 255.255.255.252
+ ip address 192.168.22.1 255.255.255.0
  ip ospf network point-to-point
 !
 interface Vlan111
  ip vrf forwarding customer-8
- ip address 10.26.255.222 255.255.255.252
+ ip address 192.168.23.1 255.255.255.0
  ip ospf network point-to-point
 !
 interface Vlan112
  ip vrf forwarding customer-6
- ip address 10.37.255.254 255.255.255.252
+ ip address 192.168.24.1 255.255.255.0
  ip ospf network point-to-point
 !
 interface Vlan113
  ip vrf forwarding customer-3
- ip address 10.39.181.126 255.255.255.252
+ ip address 192.168.25.1 255.255.255.0
  ip ospf network point-to-point
 !
 interface Vlan114
  ip vrf forwarding customer-7
- ip address 10.159.245.134 255.255.255.252
+ ip address 192.168.26.1 255.255.255.0
  ip ospf network point-to-point
 !
 interface Vlan115
  ip vrf forwarding customer-9
- ip address 10.50.250.174 255.255.255.252
+ ip address 192.168.27.1 255.255.255.0
  ip ospf network point-to-point
 !
 interface Vlan116
  ip vrf forwarding customer-4
- ip address 10.68.127.10 255.255.255.252
+ ip address 192.168.28.1 255.255.255.0
  ip ospf network point-to-point
 !
 interface Vlan121
- ip address 10.252.233.161 255.255.255.252
+ ip address 192.168.29.1 255.255.255.0
  ip ospf network point-to-point
 !
 interface Vlan122
  ip vrf forwarding customer-10
- ip address 172.21.226.41 255.255.255.252
+ ip address 192.168.30.1 255.255.255.0
  ip ospf network point-to-point
 !
 interface Vlan123
  ip vrf forwarding customer-2
- ip address 10.18.241.241 255.255.255.252
+ ip address 192.168.31.1 255.255.255.0
  ip ospf network point-to-point
 !
 interface Vlan124
  ip vrf forwarding customer-3
- ip address 10.39.181.109 255.255.255.252
+ ip address 192.168.32.1 255.255.255.0
  ip ospf network point-to-point
 !
 interface Vlan125
  ip vrf forwarding customer-7
- ip address 10.159.245.117 255.255.255.252
+ ip address 192.168.33.1 255.255.255.0
  ip ospf network point-to-point
 !
 interface Vlan126
  ip vrf forwarding customer-9
- ip address 10.50.250.157 255.255.255.252
+ ip address 192.168.34.1 255.255.255.0
  ip ospf network point-to-point
 !
 interface Vlan127
  ip vrf forwarding customer-4
- ip address 10.68.126.249 255.255.255.252
+ ip address 192.168.35.1 255.255.255.0
  ip ospf network point-to-point
 !
 interface Vlan133
  ip vrf forwarding customer-10
- ip address 172.21.19.65 255.255.255.252
+ ip address 192.168.36.1 255.255.255.0
  ip ospf network point-to-point
 !
 interface Vlan134
  ip vrf forwarding customer-6
- ip address 10.129.65.17 255.255.255.252
+ ip address 192.168.37.1 255.255.255.0
  ip ospf network point-to-point
 !
 interface Vlan138
  ip vrf forwarding customer-8
- ip address 10.26.255.229 255.255.255.252
+ ip address 192.168.38.1 255.255.255.0
  ip ospf network point-to-point
 !
 interface Vlan139
  ip vrf forwarding customer-6
- ip address 10.37.255.245 255.255.255.252
+ ip address 192.168.39.1 255.255.255.0
  ip ospf network point-to-point
 !
 interface Vlan140
  ip vrf forwarding customer-3
- ip address 10.39.181.117 255.255.255.252
+ ip address 192.168.40.1 255.255.255.0
  ip ospf network point-to-point
 !
 interface Vlan141
  ip vrf forwarding customer-7
- ip address 10.159.245.125 255.255.255.252
+ ip address 192.168.41.1 255.255.255.0
  ip ospf network point-to-point
 !
 interface Vlan142
  ip vrf forwarding customer-9
- ip address 10.50.250.165 255.255.255.252
+ ip address 192.168.42.1 255.255.255.0
  ip ospf network point-to-point
 !
 interface Vlan143
  ip vrf forwarding customer-4
- ip address 10.68.127.1 255.255.255.252
+ ip address 192.168.43.1 255.255.255.0
  ip ospf network point-to-point
 !
 interface Vlan148
  ip vrf forwarding customer-11
- ip address 10.54.127.198 255.255.255.252
+ ip address 192.168.44.1 255.255.255.0
  ip ospf network point-to-point
 !
 interface Vlan158
  ip vrf forwarding customer-11
- ip address 10.54.125.121 255.255.255.252
+ ip address 192.168.45.1 255.255.255.0
  ip ospf network point-to-point
 !
 interface Vlan161
- ip address 10.253.203.105 255.255.255.252
+ ip address 192.168.46.1 255.255.255.0
  ip ospf network point-to-point
 !
 interface Vlan162
  ip vrf forwarding customer-10
- ip address 172.21.240.241 255.255.255.252
+ ip address 192.168.47.1 255.255.255.0
  ip ospf network point-to-point
 !
 interface Vlan164
  ip vrf forwarding customer-1
- ip address 10.239.248.73 255.255.255.252
+ ip address 192.168.48.1 255.255.255.0
  ip ospf network point-to-point
 !
 interface Vlan171
  description mgmt
- ip address 10.253.210.205 255.255.255.252
+ ip address 192.168.49.1 255.255.255.0
  ip ospf network point-to-point
 !
 interface Vlan172
  ip vrf forwarding customer-10
- ip address 172.21.252.53 255.255.255.252
+ ip address 192.168.50.1 255.255.255.0
  ip ospf network point-to-point
 !
 interface Vlan174
  ip vrf forwarding customer-1
- ip address 10.239.248.133 255.255.255.252
+ ip address 192.168.51.1 255.255.255.0
  ip ospf network point-to-point
 !
 interface Vlan175
  ip vrf forwarding customer-5
- ip address 10.35.207.242 255.255.255.252
+ ip address 192.168.52.1 255.255.255.0
  ip ospf network point-to-point
 !
 interface Vlan176
  ip vrf forwarding customer-5
- ip address 10.35.207.237 255.255.255.252
+ ip address 192.168.53.1 255.255.255.0
  ip ospf network point-to-point
 !
 interface Vlan181
- ip address 10.253.244.70 255.255.255.252
+ ip address 192.168.54.1 255.255.255.0
  ip ospf network point-to-point
 !
 interface Vlan182
- ip address 10.252.219.153 255.255.255.252
+ ip address 192.168.55.1 255.255.255.0
  ip ospf network point-to-point
 !
 interface Vlan184
  ip vrf forwarding customer-1
- ip address 10.239.253.182 255.255.255.252
+ ip address 192.168.56.1 255.255.255.0
  ip ospf network point-to-point
 !
 interface Vlan188
- ip address 10.253.244.73 255.255.255.252
+ ip address 192.168.57.1 255.255.255.0
  ip ospf network point-to-point
 !
 interface Vlan189
  ip vrf forwarding customer-10
- ip address 172.21.253.117 255.255.255.252
+ ip address 192.168.58.1 255.255.255.0
  ip ospf network point-to-point
 !
 interface Vlan195
  ip vrf forwarding customer-2
- ip address 10.18.246.102 255.255.255.252
+ ip address 192.168.59.1 255.255.255.0
  ip ospf network point-to-point
 !
 interface Vlan196
  ip vrf forwarding customer-2
- ip address 10.18.246.93 255.255.255.252
+ ip address 192.168.60.1 255.255.255.0
  ip ospf network point-to-point
 !
 interface Vlan300
  ip vrf forwarding customer-10
- ip address 172.21.241.130 255.255.255.128
- ip helper-address 172.21.214.112
- ip helper-address 172.21.214.111
- standby 10 ip 172.21.241.129
+ ip address 192.168.61.2 255.255.255.0
+ ip helper-address 172.24.2.1
+ ip helper-address 172.24.2.2
+ standby 10 ip 192.168.61.1
  standby 10 priority 110
  standby 10 preempt
 !
-interface Vlan370
- ip vrf forwarding customer-7
- ip address 10.146.108.2 255.255.254.0
- ip helper-address 10.157.128.28
- ip helper-address 10.157.128.52
- standby 12 ip 10.146.108.1
- standby 12 priority 110
- standby 12 preempt
-!
-interface Vlan380
- ip vrf forwarding customer-7
- ip address 10.153.82.2 255.255.254.0
- ip helper-address 10.157.128.28
- ip helper-address 10.157.128.52
- standby 13 ip 10.153.82.1
- standby 13 priority 110
- standby 13 preempt
-!
-interface Vlan390
- ip vrf forwarding customer-7
- ip address 10.156.135.226 255.255.255.224
- ip helper-address 10.157.128.28
- ip helper-address 10.157.128.52
- standby 14 ip 10.156.135.225
- standby 14 priority 110
- standby 14 preempt
-!
 interface Vlan500
  ip vrf forwarding customer-8
- ip address 10.26.54.162 255.255.255.240
- standby 2 ip 10.26.54.161
+ ip address 192.168.62.2 255.255.255.240
+ standby 2 ip 192.168.62.1
  standby 2 priority 110
  standby 2 preempt
 !
-interface Vlan600
+interface Vlan501
  ip vrf forwarding customer-6
- ip address 10.81.71.2 255.255.255.224 secondary
- ip address 10.49.65.193 255.255.255.248
- ip helper-address 10.81.67.252
- ip helper-address 10.241.67.252
- standby 11 ip 10.81.71.1
+ ip address 192.168.63.2 255.255.255.248
+ standby 11 ip 192.168.63.1
  standby 11 priority 110
  standby 11 preempt
 !
-interface Vlan621
+interface Vlan502
  ip vrf forwarding customer-5
- ip address 10.35.204.66 255.255.255.192
- standby 6 ip 10.35.204.65
+ ip address 192.168.63.2 255.255.255.192
+ standby 6 ip 192.168.63.1
  standby 6 priority 110
  standby 6 preempt
 !
-interface Vlan640
+interface Vlan503
  ip vrf forwarding customer-3
- ip address 10.66.53.130 255.255.255.192
- ip helper-address 10.255.128.100
- ip helper-address 10.255.128.108
- standby 15 ip 10.66.53.129
+ ip address 192.168.63.2 255.255.255.192
+ standby 15 ip 192.168.63.1
  standby 15 priority 110
  standby 15 preempt
 !
-interface Vlan685
+interface Vlan504
  ip vrf forwarding customer-4
- ip address 10.68.14.2 255.255.255.128
- ip helper-address 10.174.0.6
- ip helper-address 10.174.0.38
- standby 16 ip 10.68.14.1
+ ip address 192.168.63.2 255.255.255.128
+ standby 16 ip 192.168.63.1
  standby 16 priority 110
  standby 16 preempt
 !
-interface Vlan700
- ip vrf forwarding customer-2
- ip address 10.18.54.66 255.255.255.128
- ip helper-address 10.255.128.84
- ip helper-address 10.255.128.92
- standby 5 ip 10.18.54.65
- standby 5 priority 110
- standby 5 preempt
-!
-interface Vlan875
- ip vrf forwarding customer-9
- ip address 10.50.87.130 255.255.255.128
- ip helper-address 10.174.0.6
- ip helper-address 10.174.0.38
- standby 17 ip 10.50.87.129
- standby 17 priority 110
- standby 17 preempt
-!
-interface Vlan900
- ip vrf forwarding customer-10
- ip address 10.191.58.2 255.255.254.0
- ip helper-address 172.21.214.112
- ip helper-address 172.21.214.111
- standby 3 ip 10.191.58.1
- standby 3 priority 110
- standby 3 preempt
-!
-interface Vlan901
- ip vrf forwarding customer-10
- ip address 10.191.253.145 255.255.255.252
-!
-interface Vlan1160
- ip vrf forwarding customer-11
- ip address 10.54.2.2 255.255.255.192
- standby 7 ip 10.54.2.1
- standby 7 priority 110
- standby 7 preempt
-!
-router ospf 3400 vrf customer-5
- passive-interface Vlan621
- network 10.35.204.64 0.0.0.63 area 10.35.204.0
- network 10.35.207.237 0.0.0.0 area 10.35.204.0
- network 10.35.207.242 0.0.0.0 area 10.35.204.0
-!
-router ospf 700 vrf customer-1
- network 10.239.248.73 0.0.0.0 area 10.239.1.0
- network 10.239.248.133 0.0.0.0 area 10.239.1.0
- network 10.239.253.182 0.0.0.0 area 10.239.1.0
-!
-router ospf 1300 vrf customer-2
- passive-interface Vlan700
- network 10.18.54.0 0.0.0.127 area 1.1.1.1
- network 10.18.241.97 0.0.0.0 area 1.1.1.1
- network 10.18.241.241 0.0.0.0 area 1.1.1.1
- network 10.18.246.93 0.0.0.0 area 1.1.1.1
- network 10.18.246.102 0.0.0.0 area 1.1.1.1
-!
-router ospf 630 vrf customer-11
- passive-interface Vlan1160
- network 10.54.2.2 0.0.0.0 area 1.1.1.1
- network 10.54.2.0 0.0.0.63 area 1.1.1.1
- network 10.54.125.121 0.0.0.0 area 1.1.1.1
- network 10.54.125.130 0.0.0.0 area 1.1.1.1
- network 10.54.127.198 0.0.0.0 area 1.1.1.1
-!
-router ospf 1000 vrf customer-6
- passive-interface Vlan600
- network 10.37.255.245 0.0.0.0 area 10.37.1.0
- network 10.37.255.254 0.0.0.0 area 10.37.1.0
- network 10.49.65.193 0.0.0.0 area 10.37.1.0
- network 10.81.71.0 0.0.0.31 area 10.37.1.0
- network 10.129.65.17 0.0.0.0 area 10.37.1.0
-!
-router ospf 500 vrf customer-8
- passive-interface Vlan500
- network 10.26.54.160 0.0.0.15 area 10.26.1.0
- network 10.26.255.222 0.0.0.0 area 10.26.1.0
- network 10.26.255.229 0.0.0.0 area 10.26.1.0
-!
-router ospf 100 vrf customer-10
- passive-interface Vlan1
- passive-interface Vlan300
- passive-interface Vlan900
- network 10.191.58.2 0.0.0.0 area 10.21.1.0
- network 10.191.253.140 0.0.0.3 area 172.21.1.0
- network 10.191.253.145 0.0.0.0 area 172.21.1.0
- network 172.21.19.65 0.0.0.0 area 172.21.1.0
- network 172.21.202.97 0.0.0.0 area 172.21.1.0
- network 172.21.226.41 0.0.0.0 area 172.21.1.0
- network 172.21.227.0 0.0.0.255 area 172.21.1.0
- network 172.21.240.241 0.0.0.0 area 172.21.1.0
- network 172.21.241.128 0.0.0.127 area 172.21.1.0
- network 172.21.252.53 0.0.0.0 area 172.21.1.0
- network 172.21.253.110 0.0.0.0 area 172.21.1.0
- network 172.21.253.117 0.0.0.0 area 172.21.1.0
- network 172.21.254.41 0.0.0.0 area 172.21.1.0
-!
-router ospf 3700 vrf customer-3
- passive-interface Vlan640
- network 10.39.181.109 0.0.0.0 area 1.1.1.1
- network 10.39.181.113 0.0.0.0 area 1.1.1.1
- network 10.39.181.117 0.0.0.0 area 1.1.1.1
- network 10.39.181.126 0.0.0.0 area 1.1.1.1
- network 10.66.53.128 0.0.0.63 area 1.1.1.1
-!
-router ospf 940 vrf customer-7
- passive-interface Vlan370
- passive-interface Vlan380
- passive-interface Vlan390
- network 10.146.108.0 0.0.1.255 area 1.1.1.1
- network 10.153.82.0 0.0.1.255 area 1.1.1.1
- network 10.156.135.224 0.0.0.31 area 1.1.1.1
- network 10.159.245.117 0.0.0.0 area 1.1.1.1
- network 10.159.245.121 0.0.0.0 area 1.1.1.1
- network 10.159.245.125 0.0.0.0 area 1.1.1.1
- network 10.159.245.134 0.0.0.0 area 1.1.1.1
-!
-router ospf 950 vrf customer-9
- passive-interface Vlan875
- network 10.50.87.128 0.0.0.127 area 1.1.1.1
- network 10.50.250.157 0.0.0.0 area 1.1.1.1
- network 10.50.250.161 0.0.0.0 area 1.1.1.1
- network 10.50.250.165 0.0.0.0 area 1.1.1.1
- network 10.50.250.174 0.0.0.0 area 1.1.1.1
-!
 router ospf 1450 vrf customer-4
  passive-interface Vlan685
- network 10.68.14.0 0.0.0.127 area 1.1.1.1
- network 10.68.126.249 0.0.0.0 area 1.1.1.1
- network 10.68.126.253 0.0.0.0 area 1.1.1.1
- network 10.68.127.1 0.0.0.0 area 1.1.1.1
- network 10.68.127.10 0.0.0.0 area 1.1.1.1
+ network 192.168.20.1 0.0.0.127 area 1.1.1.1
+ network 192.168.21.1 0.0.0.0 area 1.1.1.1
+ network 192.168.22.1 0.0.0.0 area 1.1.1.1
+ network 192.168.23.1 0.0.0.0 area 1.1.1.1
+ network 192.168.23.5 0.0.0.0 area 1.1.1.1
 !
-router ospf 25325
- passive-interface Vlan2
- network 10.252.14.130 0.0.0.0 area 10.253.1.0
- network 10.252.219.153 0.0.0.0 area 10.253.1.0
- network 10.252.233.161 0.0.0.0 area 10.253.1.0
- network 10.253.13.0 0.0.0.15 area 10.253.1.0
- network 10.253.115.224 0.0.0.31 area 10.253.1.0
- network 10.253.203.105 0.0.0.0 area 10.253.1.0
- network 10.253.210.205 0.0.0.0 area 10.253.1.0
- network 10.253.244.70 0.0.0.0 area 10.253.1.0
- network 10.253.244.73 0.0.0.0 area 10.253.1.0
- network 10.253.244.85 0.0.0.0 area 10.253.1.0
- network 10.255.115.241 0.0.0.0 area 10.253.1.0
+router ospf 3
+ passive-interface Vlan3
+ network 192.168.0.1 0.0.0.255 area 192.168.0.0
+ network 192.168.1.1 0.0.0.255 area 192.168.0.0
+ network 192.168.2.1 0.0.0.0 area 192.168.0.0
 !
 ip forward-protocol nd
 no ip http server
