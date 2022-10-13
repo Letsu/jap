@@ -142,7 +142,7 @@ func TestParseInterface(t *testing.T) {
 		}
 
 		if testInter.AccessPort != inter.AccessPort {
-			t.Errorf("Got wrong access port want: `%t`, got: `%t`", testInter.AccessPort, inter.AccessPort)
+			t.Errorf("Got wrong access port want: `%t`, got: `%t` on %s, %s", testInter.AccessPort, inter.AccessPort, testInter.FileName, inter.Identifier)
 		}
 
 		if testInter.AccessVlan != inter.AccessVlan {
