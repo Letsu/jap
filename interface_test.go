@@ -19,7 +19,7 @@ type TestInterface struct {
 	AccessPort         bool
 	AccessVlan         int
 	VoiceVlan          int
-	IPHHelperAddresses []string
+	IPHelperAddresses  []string
 }
 
 type TestIp struct {
@@ -51,7 +51,7 @@ func TestParseInterface(t *testing.T) {
 		Vrf:                "red-custom",
 		DhcpSnoopingThrust: false,
 		AccessPort:         false,
-		IPHHelperAddresses: []string{"10.0.0.100", "10.0.0.101"},
+		IPHelperAddresses:  []string{"10.0.0.100", "10.0.0.101"},
 	}
 	layer3.TestIps = append(layer3.TestIps, ip1)
 	layer3.TestIps = append(layer3.TestIps, ip2)
@@ -153,9 +153,9 @@ func TestParseInterface(t *testing.T) {
 			t.Errorf("Got wrong voice vlan want: `%d`, got: `%d`", testInter.VoiceVlan, inter.VoiceVlan)
 		}
 
-		for i, helperAddress := range inter.IPHHelperAddresses {
+		for i, helperAddress := range inter.IPHelperAddresses {
 			found := false
-			for _, ip := range testInter.IPHHelperAddresses {
+			for _, ip := range testInter.IPHelperAddresses {
 				if ip == helperAddress {
 					found = true
 					break
@@ -163,7 +163,7 @@ func TestParseInterface(t *testing.T) {
 			}
 
 			if !found {
-				t.Errorf("Did not find ip helper: `%s` in interface: `%s`", testInter.IPHHelperAddresses[i], testInter.Identifier)
+				t.Errorf("Did not find ip helper: `%s` in interface: `%s`", testInter.IPHelperAddresses[i], testInter.Identifier)
 			}
 		}
 

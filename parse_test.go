@@ -36,7 +36,7 @@ func TestParse(t *testing.T) {
 	genericRouter := TestFile{
 		FileName:           "genericRouter.txt",
 		Hostname:           "router-01",
-		NumberOfInterfaces: 132,
+		NumberOfInterfaces: 124,
 		NumberOfVlans:      65,
 	}
 	testFiles = append(testFiles, genericRouter)
