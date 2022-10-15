@@ -3,7 +3,7 @@ interface FastEthernet0/2
  switchport mode access
  switchport voice vlan 300
  switchport port-security maximum 5
- switchport port-security violation  restrict
+ switchport port-security violation restrict
  switchport port-security aging time 2
  switchport port-security aging type inactivity
  switchport port-security
@@ -11,5 +11,5 @@ interface FastEthernet0/2
  shutdown
  srr-queue bandwidth shape  0 0 0 0
  storm-control broadcast level 0.50
- spanning-tree portfast
+ spanning-tree portfast edge
  spanning-tree bpduguard enable
