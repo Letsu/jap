@@ -26,6 +26,8 @@ type CiscoInterface struct {
 	PortSecurityViolation string   `reg:"switchport port-security violation (protect|restrict|shutdown)" cmd:"switchport port-security violation %s"`
 	STPportfast           string   `reg:"spanning-tree portfast (disable|edge|network)" cmd:"spanning-tree portfast %s"`
 	STPbpduguard          string   `reg:"spanning-tree bpduguard (disable|enable)" cmd:"spanning-tree bpduguard %s"`
+	ServicePolicyInput    string   `reg:"service-policy input ([[:print:]]+)" cmd:"service-policy input %s"`
+	ServicePolicyOutput   string   `reg:"service-policy output ([[:print:]]+)" cmd:"service-policy output %s"`
 	NativeVlan            int      `reg:"switchport trunk native vlan ([0-9]+)" cmd:"switchport trunk native vlan %d"`
 	AccessVlan            int      `reg:"switchport access vlan ([0-9]+)" cmd:"switchport access vlan %d"`
 	VoiceVlan             int      `reg:"switchport voice vlan ([0-9]+)" cmd:"switchport voice vlan %d"`
