@@ -42,7 +42,7 @@ func Parse(config string) (RunningConfig, error) {
 		}
 
 		// Get all interfaces
-		re, _ = regexp.Compile("interface ([\\w\\/\\.\\-\\:]+)")
+		re, _ = regexp.Compile("^[\\s]*interface ([\\w\\/\\.\\-\\:]+)")
 		if re.MatchString(firstLine) {
 			inter, err := ParseInterface(part)
 			if err != nil {
