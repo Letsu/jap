@@ -125,6 +125,28 @@ func ParseInterface(part string) (CiscoInterface, error) {
 		}
 	}
 
+	//Trunk allowed vlan
+	if inter.Trunk {
+		re = regexp.MustCompile("switchport trunk allowed vlan( add)? ([\\d,-]+)")
+		found := re.FindAllStringSubmatch(part, -1)
+		for _, allvlans := range found {
+			vlans := strings.Split(allvlans[2], ",")
+			for _, vlan := range vlans {
+				if strings.Contains(vlan, "-") {
+					vlanSplit := strings.Split(vlan, "-")
+					from, _ := strconv.Atoi(vlanSplit[0])
+					to, _ := strconv.Atoi(vlanSplit[1])
+					for i := from; i <= to; i++ {
+						inter.TrunkAllowedVlan = append(inter.TrunkAllowedVlan, i)
+					}
+					continue
+				}
+				vlanI, _ := strconv.Atoi(vlan)
+				inter.TrunkAllowedVlan = append(inter.TrunkAllowedVlan, vlanI)
+			}
+		}
+	}
+
 	return inter, nil
 }
 
