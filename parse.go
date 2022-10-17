@@ -53,7 +53,7 @@ func Parse(config string) (RunningConfig, error) {
 		}
 
 		// Get vlans
-		re = regexp.MustCompile(`^vlan ([0-9]+)`)
+		re = regexp.MustCompile(`^[\\s]vlan ([\\d]+)`)
 		vlanPart := re.FindStringSubmatch(firstLine)
 		if len(vlanPart) > 1 {
 			vlanId, _ := strconv.Atoi(vlanPart[1])
