@@ -10,11 +10,11 @@ func TestParseVlan(t *testing.T) {
 		t.Error(err)
 	}
 
-	if vlan.id != 300 {
-		t.Errorf("Wrong VLan Id wants: `300` got: `%v`", vlan.id)
+	if vlan.Id != 300 {
+		t.Errorf("Wrong VLan Id wants: `300` got: `%v`", vlan.Id)
 	}
 
-	if vlan.name != "office" {
-		t.Errorf("Wrong VLan name wants: `office` got: `%v`", vlan.id)
+	if vlan.Name != "office" {
+		t.Errorf("Wrong VLan name wants: `office` got: `%v`", vlan.Id)
 	}
 }

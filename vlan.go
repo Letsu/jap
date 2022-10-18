@@ -9,11 +9,11 @@ type Vlan struct {
 
 func ParseVlan(part string, vlanId int) (Vlan, error) {
 	var vlan Vlan
-	vlan.id = vlanId
+	vlan.Id = vlanId
 	re := regexp.MustCompile(`name ([[:print:]]+)`)
 	fullName := re.FindStringSubmatch(part)
 	if len(fullName) > 0 {
-		vlan.name = fullName[1]
+		vlan.Name = fullName[1]
 	}
 
 	return vlan, nil
