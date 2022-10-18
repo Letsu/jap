@@ -3,8 +3,8 @@ package jap
 import "regexp"
 
 type Vlan struct {
-	id   int
-	name string
+	Id   int
+	Name string
 }
 
 func ParseVlan(part string, vlanId int) (Vlan, error) {
