@@ -25,7 +25,7 @@ type CiscoInterface struct {
 	TrunkAllowedVlan      []int
 	Trunk                 bool    `reg:"switchport mode trunk" cmd:"switchport mode trunk"`
 	Shutdown              bool    `reg:"shutdown" cmd:"shutdown"`
-	SCBroadcastLevel      float64 `reg:"storm-control broadcast level ([0-9.]+)" cmd:"storm-control broadcast level %f"`
+	SCBroadcastLevel      float64 `reg:"storm-control broadcast level ([0-9\\.]+)" cmd:"storm-control broadcast level %f"`
 	STPportfast           string  `reg:"spanning-tree portfast (disable|edge|network)" cmd:"spanning-tree portfast %s"`
 	STPbpduguard          string  `reg:"spanning-tree bpduguard (disable|enable)" cmd:"spanning-tree bpduguard %s"`
 	ServicePolicyInput    string  `reg:"service-policy input ([[:print:]]+)" cmd:"service-policy input %s"`
