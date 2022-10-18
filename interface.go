@@ -34,26 +34,7 @@ type CiscoInterface struct {
 	Vrf                   string  `reg:"ip vrf forwarding ([[:print:]]+)" cmd:"ip vrf forwarding %s"`
 	Ips                   []Ip
 	IPHelperAddresses     []string `reg:"ip helper-address (\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\.\\d{1,3})" cmd:"ip helper-address %s"`
-	TrunkAllowedVlan      []int    `reg:"ip helper-address (\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\.\\d{1,3})" cmd:"ip helper-address %s"`
-	Shutdown              bool     `reg:"shutdown" cmd:"shutdown"`
-	Trunk                 bool     `reg:"switchport mode trunk" cmd:"switchport mode trunk"`
-	AccessPort            bool     `reg:"switchport mode access" cmd:"switchport mode access"`
-	DhcpSnoopingThrust    bool     `reg:"ip dhcp snooping trust" cmd:"ip dhcp snooping trust"`
-	PortSecurity          bool     `reg:"switchport port-security" cmd:"switchport port-security"`
-	Description           string   `reg:"description ([[:print:]]+)" cmd:"description %s"`
-	Vrf                   string   `reg:"ip vrf forwarding ([[:print:]]+)" cmd:"ip vrf forwarding %s"`
-	PortSecurityAgingType string   `reg:"switchport port-security type (absolute|inactivity)" cmd:"switchport port-security type  %s"`
-	PortSecurityViolation string   `reg:"switchport port-security violation (protect|restrict|shutdown)" cmd:"switchport port-security violation %s"`
-	STPportfast           string   `reg:"spanning-tree portfast (disable|edge|network)" cmd:"spanning-tree portfast %s"`
-	STPbpduguard          string   `reg:"spanning-tree bpduguard (disable|enable)" cmd:"spanning-tree bpduguard %s"`
-	ServicePolicyInput    string   `reg:"service-policy input ([[:print:]]+)" cmd:"service-policy input %s"`
-	ServicePolicyOutput   string   `reg:"service-policy output ([[:print:]]+)" cmd:"service-policy output %s"`
-	NativeVlan            int      `reg:"switchport trunk native vlan ([0-9]+)" cmd:"switchport trunk native vlan %d"`
-	AccessVlan            int      `reg:"switchport access vlan ([0-9]+)" cmd:"switchport access vlan %d"`
-	VoiceVlan             int      `reg:"switchport voice vlan ([0-9]+)" cmd:"switchport voice vlan %d"`
-	PortSecurityMaximum   int      `reg:"switchport port-security maximum ([0-9]+)" cmd:"switchport port-security maximum %d"`
-	PortSecurityAgingTime int      `reg:"switchport port-security aging time ([0-9]+)" cmd:"switchport port-security aging time %d"`
-	SCBroadcastLevel      float64  `reg:"storm-control broadcast level ([0-9.]+)" cmd:"storm-control broadcast level %f"`
+	OspfNetwork           string   `reg:"ip ospf network (broadcast|non-broadcast|point-to-multipoint|point-to-point)" cmd:"ip ospf network %s"`
 }
 
 type Ip struct {
