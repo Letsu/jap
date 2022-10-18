@@ -141,8 +141,8 @@ func TestParseInterface(t *testing.T) {
 			t.Errorf("Got wrong dhcp snooping thrust mode want: `%t`, got: `%t`", testInter.DhcpSnoopingThrust, inter.DhcpSnoopingThrust)
 		}
 
-		if testInter.AccessPort != inter.AccessPort {
-			t.Errorf("Got wrong access port want: `%t`, got: `%t` on %s, %s", testInter.AccessPort, inter.AccessPort, testInter.FileName, inter.Identifier)
+		if testInter.AccessPort != inter.Access {
+			t.Errorf("Got wrong access port want: `%t`, got: `%t` on %s, %s", testInter.AccessPort, inter.Access, testInter.FileName, inter.Identifier)
 		}
 
 		if testInter.AccessVlan != inter.AccessVlan {

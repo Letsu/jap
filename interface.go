@@ -12,6 +12,26 @@ import (
 type CiscoInterface struct {
 	Identifier            string
 	SubInterface          int
+	AccessVlan            int    `reg:"switchport access vlan ([0-9]+)" cmd:"switchport access vlan %d"`
+	Access                bool   `reg:"switchport mode access" cmd:"switchport mode access"`
+	VoiceVlan             int    `reg:"switchport voice vlan ([0-9]+)" cmd:"switchport voice vlan %d"`
+	PortSecurityMaximum   int    `reg:"switchport port-security maximum ([0-9]+)" cmd:"switchport port-security maximum %d"`
+	PortSecurityViolation string `reg:"switchport port-security violation (protect|restrict|shutdown)" cmd:"switchport port-security violation %s"`
+	PortSecurityAgingTime int    `reg:"switchport port-security aging time ([0-9]+)" cmd:"switchport port-security aging time %d"`
+	PortSecurityAgingType string `reg:"switchport port-security type (absolute|inactivity)" cmd:"switchport port-security type  %s"`
+	PortSecurity          bool   `reg:"switchport port-security" cmd:"switchport port-security"`
+	Description           string `reg:"description ([[:print:]]+)" cmd:"description %s"`
+	NativeVlan            int    `reg:"switchport trunk native vlan ([0-9]+)" cmd:"switchport trunk native vlan %d"`
+	TrunkAllowedVlan      []int
+	Trunk                 bool    `reg:"switchport mode trunk" cmd:"switchport mode trunk"`
+	Shutdown              bool    `reg:"shutdown" cmd:"shutdown"`
+	SCBroadcastLevel      float64 `reg:"storm-control broadcast level ([0-9.]+)" cmd:"storm-control broadcast level %f"`
+	STPportfast           string  `reg:"spanning-tree portfast (disable|edge|network)" cmd:"spanning-tree portfast %s"`
+	STPbpduguard          string  `reg:"spanning-tree bpduguard (disable|enable)" cmd:"spanning-tree bpduguard %s"`
+	ServicePolicyInput    string  `reg:"service-policy input ([[:print:]]+)" cmd:"service-policy input %s"`
+	ServicePolicyOutput   string  `reg:"service-policy output ([[:print:]]+)" cmd:"service-policy output %s"`
+	DhcpSnoopingThrust    bool    `reg:"ip dhcp snooping trust" cmd:"ip dhcp snooping trust"`
+	Vrf                   string  `reg:"ip vrf forwarding ([[:print:]]+)" cmd:"ip vrf forwarding %s"`
 	Ips                   []Ip
 	IPHelperAddresses     []string `reg:"ip helper-address (\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\.\\d{1,3})" cmd:"ip helper-address %s"`
 	TrunkAllowedVlan      []int    `reg:"ip helper-address (\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\.\\d{1,3})" cmd:"ip helper-address %s"`
@@ -121,9 +141,9 @@ func ParseInterface(part string) (CiscoInterface, error) {
 	}
 
 	//Check if Routed Port, Trunk or Access when no direct config is present
-	if !inter.AccessPort && !inter.Trunk {
+	if !inter.Access && !inter.Trunk {
 		if !strings.Contains(part, "ip address") && !strings.Contains(part, "no switchport") {
-			inter.AccessPort = true
+			inter.Access = true
 		}
 	}
 
