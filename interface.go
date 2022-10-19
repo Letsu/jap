@@ -18,14 +18,14 @@ type CiscoInterface struct {
 	PortSecurityMaximum   int    `reg:"switchport port-security maximum ([0-9]+)" cmd:"switchport port-security maximum %d"`
 	PortSecurityViolation string `reg:"switchport port-security violation (protect|restrict|shutdown)" cmd:"switchport port-security violation %s"`
 	PortSecurityAgingTime int    `reg:"switchport port-security aging time ([0-9]+)" cmd:"switchport port-security aging time %d"`
-	PortSecurityAgingType string `reg:"switchport port-security type (absolute|inactivity)" cmd:"switchport port-security type  %s"`
+	PortSecurityAgingType string `reg:"switchport port-security aging type (absolute|inactivity)" cmd:"switchport port-security type  %s"`
 	PortSecurity          bool   `reg:"switchport port-security" cmd:"switchport port-security"`
 	Description           string `reg:"description ([[:print:]]+)" cmd:"description %s"`
 	NativeVlan            int    `reg:"switchport trunk native vlan ([0-9]+)" cmd:"switchport trunk native vlan %d"`
 	TrunkAllowedVlan      []int
 	Trunk                 bool    `reg:"switchport mode trunk" cmd:"switchport mode trunk"`
 	Shutdown              bool    `reg:"shutdown" cmd:"shutdown"`
-	SCBroadcastLevel      float64 `reg:"storm-control broadcast level ([0-9\\.]+)" cmd:"storm-control broadcast level %f"`
+	SCBroadcastLevel      float64 `reg:"storm-control broadcast level ([0-9\\.]+)" cmd:"storm-control broadcast level %.2f"`
 	STPportfast           string  `reg:"spanning-tree portfast (disable|edge|network)" cmd:"spanning-tree portfast %s"`
 	STPbpduguard          string  `reg:"spanning-tree bpduguard (disable|enable)" cmd:"spanning-tree bpduguard %s"`
 	ServicePolicyInput    string  `reg:"service-policy input ([[:print:]]+)" cmd:"service-policy input %s"`
@@ -190,6 +190,12 @@ func (in CiscoInterface) GenerateInterface() (string, error) {
 					continue
 				}
 				cmd = tag
+			case reflect.Float64:
+				value := reflect.ValueOf(&in).Elem().Field(i).Float()
+				if value == 0.0 {
+					continue
+				}
+				cmd = fmt.Sprintf(tag, value)
 			default:
 				continue
 			}
