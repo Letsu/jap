@@ -10,8 +10,9 @@ type RunningConfig struct {
 	Hostname        string
 	FullConfig      string
 	FullConfigNoNew string
-	Interfaces      []CiscoInterface
 	Vlans           []Vlan
+	Interfaces      []CiscoInterface
+	OSPFProcess     []Ospf
 }
 
 func Parse(config string) (RunningConfig, error) {
@@ -41,19 +42,8 @@ func Parse(config string) (RunningConfig, error) {
 			continue
 		}
 
-		// Get all interfaces
-		re, _ = regexp.Compile("^[\\s]*interface ([\\w\\/\\.\\-\\:]+)")
-		if re.MatchString(firstLine) {
-			inter, err := ParseInterface(part)
-			if err != nil {
-				return RunningConfig{}, err
-			}
-			running.Interfaces = append(running.Interfaces, inter)
-			continue
-		}
-
 		// Get vlans
-		re = regexp.MustCompile(`^[\s]*vlan ([\d]+)`)
+		re = regexp.MustCompile(`^\s*vlan (\d+)`)
 		vlanPart := re.FindStringSubmatch(firstLine)
 		if len(vlanPart) > 1 {
 			vlanId, _ := strconv.Atoi(vlanPart[1])
@@ -66,7 +56,27 @@ func Parse(config string) (RunningConfig, error) {
 			continue
 		}
 
+		// Get all interfaces
+		re, _ = regexp.Compile(`^\s*interface ([\w\/\.\-\:]+)`)
+		if re.MatchString(firstLine) {
+			inter, err := ParseInterface(part)
+			if err != nil {
+				return RunningConfig{}, err
+			}
+			running.Interfaces = append(running.Interfaces, inter)
+			continue
+		}
+
 		// Router OSPF
+		re, _ = regexp.Compile(`^\s*router ospf (\d+)( vrf ([[:print:]]+))?`)
+		if re.MatchString(firstLine) {
+			process, err := ParseOSPF(part)
+			if err != nil {
+				return RunningConfig{}, err
+			}
+			running.OSPFProcess = append(running.OSPFProcess, process)
+			continue
+		}
 
 		// Router BGP
 
