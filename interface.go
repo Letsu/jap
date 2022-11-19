@@ -3,7 +3,6 @@ package jap
 import (
 	"errors"
 	"fmt"
-	"reflect"
 	"regexp"
 	"strconv"
 	"strings"
@@ -26,7 +25,7 @@ type CiscoInterface struct {
 	PortSecurityMaximum   int      `reg:"switchport port-security maximum ([0-9]+)" cmd:"switchport port-security maximum %d"`
 	PortSecurityViolation string   `reg:"switchport port-security violation (protect|restrict|shutdown)" cmd:"switchport port-security violation %s"`
 	PortSecurityAgingTime int      `reg:"switchport port-security aging time ([0-9]+)" cmd:"switchport port-security aging time %d"`
-	PortSecurityAgingType string   `reg:"switchport port-security aging type (absolute|inactivity)" cmd:"switchport port-security type  %s"`
+	PortSecurityAgingType string   `reg:"switchport port-security aging type (absolute|inactivity)" cmd:"switchport port-security type %s"`
 	PortSecurity          bool     `reg:"switchport port-security" cmd:"switchport port-security"`
 	Description           string   `reg:"description ([[:print:]]+)" cmd:"description %s"`
 	NativeVlan            int      `reg:"switchport trunk native vlan ([0-9]+)" cmd:"switchport trunk native vlan %d"`
@@ -53,7 +52,7 @@ type Ip struct {
 }
 
 func (inter *CiscoInterface) Parse(part string) error {
-	// Get identifier
+	// Get interface identifier
 	re := regexp.MustCompile(`interface ([\w\/\.\-\:]+)`)
 	identifier := re.FindStringSubmatch(part)
 	identifier = strings.Split(identifier[1], ".")
@@ -62,29 +61,7 @@ func (inter *CiscoInterface) Parse(part string) error {
 		inter.SubInterface, _ = strconv.Atoi(identifier[1])
 	}
 
-	// Get ipv4 addresses
-	/*	ipRe := regexp.MustCompile(`(?m)ip address (\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}) (\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})( secondary)?( vrf ([\w\-]+))?`)
-		ips := ipRe.FindAllStringSubmatch(part, -1)
-		for _, intIp := range ips {
-			ipAdd := Ip{
-				Ip:        intIp[1],
-				Subnet:    intIp[2],
-				Secondary: false,
-			}
-			if strings.Contains(intIp[3], "secondary") {
-				ipAdd.Secondary = true
-			}
-
-			if len(intIp) > 3 {
-				ipAdd.VRF = intIp[5]
-			}
-
-			inter.Ips = append(inter.Ips, ipAdd)
-		}*/
-
-	//
-	// Get all the rest stuff
-	//
+	//Parse the interface struct
 	err := ProcessParse(part, inter)
 	if err != nil {
 		return err
@@ -112,45 +89,11 @@ func (inter CiscoInterface) Generate() (string, error) {
 		config = fmt.Sprintf("interface %s\n", inter.Identifier)
 	}
 
-	t := reflect.TypeOf(inter)
-	for i := 0; i < t.NumField(); i++ {
-		field := t.Field(i)
-		tag := field.Tag.Get("cmd")
-		if tag != "" {
-			var cmd string
-			switch field.Type.Kind() {
-			case reflect.String:
-				value := reflect.ValueOf(&inter).Elem().Field(i).String()
-				if value == "" {
-					continue
-				}
-				cmd = fmt.Sprintf(tag, value)
-			case reflect.Int:
-				value := reflect.ValueOf(&inter).Elem().Field(i).Int()
-				if value == 0 {
-					continue
-				}
-				cmd = fmt.Sprintf(tag, value)
-			case reflect.Bool:
-				value := reflect.ValueOf(&inter).Elem().Field(i).Bool()
-				if !value {
-					continue
-				}
-				cmd = tag
-			case reflect.Float64:
-				value := reflect.ValueOf(&inter).Elem().Field(i).Float()
-				if value == 0.0 {
-					continue
-				}
-				cmd = fmt.Sprintf(tag, value)
-			default:
-				continue
-			}
-			cmd = "  " + cmd + "\n"
-			config = config + cmd
-		}
+	generated, err := Generate(inter)
+	if err != nil {
+		return "", err
 	}
-	config = config + "!"
+	config = config + generated
 
 	return config, nil
 }
