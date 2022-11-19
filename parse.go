@@ -1,7 +1,6 @@
 package jap
 
 import (
-	"log"
 	"reflect"
 	"regexp"
 	"strconv"
@@ -92,8 +91,10 @@ func Parse(config string) (RunningConfig, error) {
 }
 
 func ProcessParse(part string, parsed any) error {
+	// Check if type is already a "reflect.Value", to let the function call itself in case of a struct in a struct
 	var v, tmp, rv reflect.Value
 	if reflect.TypeOf(parsed).String() != "reflect.Value" {
+		// Generate a copy of the "parsed" interface to fill it with values
 		v = reflect.Indirect(reflect.ValueOf(&parsed)).Elem()
 		tmp = reflect.New(v.Elem().Type()).Elem()
 		tmp.Set(v.Elem())
@@ -102,9 +103,9 @@ func ProcessParse(part string, parsed any) error {
 	} else {
 		v, tmp, rv = parsed.(reflect.Value), parsed.(reflect.Value), parsed.(reflect.Value)
 	}
-
 	rt := rv.Type()
 
+	// for through all field of the struct, get the regex tag and fill it with the found data
 	for i := 0; i < rv.NumField(); i++ {
 		field := rt.Field(i)
 		tag := field.Tag.Get("reg")
@@ -118,7 +119,6 @@ func ProcessParse(part string, parsed any) error {
 
 			switch field.Type.Kind() {
 			case reflect.String:
-				//reflect.ValueOf(&parsed).Elem().Elem().Field(i).SetString(data[0][1])
 				tmp.Field(i).SetString(data[0][1])
 				break
 			case reflect.Int:
@@ -126,11 +126,9 @@ func ProcessParse(part string, parsed any) error {
 				if err != nil {
 					return nil
 				}
-				// reflect.ValueOf(&parsed).Elem().Field(i).SetInt(value)
 				tmp.Field(i).SetInt(value)
 				break
 			case reflect.Bool:
-				// reflect.ValueOf(&parsed).Elem().Field(i).SetBool(true)
 				tmp.Field(i).SetBool(true)
 				break
 			case reflect.Float64:
@@ -138,17 +136,13 @@ func ProcessParse(part string, parsed any) error {
 				if err != nil {
 					return nil
 				}
-				//reflect.ValueOf(&parsed).Elem().Field(i).SetFloat(float)
 				tmp.Field(i).SetFloat(float)
 			default:
-				log.Println(field.Type.String() + " not implemented!")
-				//panic(field.Type.String() + " not implemented!")
-
+				panic(field.Type.String() + " not implemented!")
 			case reflect.Slice:
 				switch field.Type.String() {
 				case "[]string":
 					for _, d := range data {
-						//valuePtr := reflect.ValueOf(&tmp)
 						value := tmp.Field(i)
 						value.Set(reflect.Append(value, reflect.ValueOf(d[1])))
 					}
@@ -171,9 +165,7 @@ func ProcessParse(part string, parsed any) error {
 						}
 					}
 				default:
-					// Irgendwie das Struct zum laufen bringen... irgendwas geht so überhaupt nicht
 					values := tmp.Field(i)
-					//value := valuePtr.Field(i)
 					if values.Type().Kind() == reflect.Slice {
 						for _, t := range data {
 							tmp2 := reflect.New(values.Type().Elem()).Elem()
