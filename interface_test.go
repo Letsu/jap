@@ -9,26 +9,7 @@ import (
 )
 
 type TestInterface struct {
-	FileName           string
-	Identifier         string
-	Description        string
-	SubInterface       int
-	Shutdown           bool
-	Trunk              bool
-	NativeVlan         int
-	TestIps            []TestIp
-	Vrf                string
-	DhcpSnoopingThrust bool
-	AccessPort         bool
-	AccessVlan         int
-	VoiceVlan          int
-	IPHelperAddresses  []string
-}
-
-type TestIp struct {
-	IpAdd     string
-	Subnet    string
-	Secondary bool
+	FileName string
 }
 
 func TestParseInterface(t *testing.T) {
