@@ -25,7 +25,7 @@ type CiscoInterface struct {
 	PortSecurityMaximum   int      `reg:"switchport port-security maximum ([0-9]+)" cmd:"switchport port-security maximum %d"`
 	PortSecurityViolation string   `reg:"switchport port-security violation (protect|restrict|shutdown)" cmd:"switchport port-security violation %s"`
 	PortSecurityAgingTime int      `reg:"switchport port-security aging time ([0-9]+)" cmd:"switchport port-security aging time %d"`
-	PortSecurityAgingType string   `reg:"switchport port-security aging type (absolute|inactivity)" cmd:"switchport port-security type %s"`
+	PortSecurityAgingType string   `reg:"switchport port-security aging type (absolute|inactivity)" cmd:"switchport port-security aging type %s"`
 	PortSecurity          bool     `reg:"switchport port-security" cmd:"switchport port-security"`
 	Description           string   `reg:"description ([[:print:]]+)" cmd:"description %s"`
 	NativeVlan            int      `reg:"switchport trunk native vlan ([0-9]+)" cmd:"switchport trunk native vlan %d"`
@@ -38,9 +38,9 @@ type CiscoInterface struct {
 	ServicePolicyInput    string   `reg:"service-policy input ([[:print:]]+)" cmd:"service-policy input %s"`
 	ServicePolicyOutput   string   `reg:"service-policy output ([[:print:]]+)" cmd:"service-policy output %s"`
 	DhcpSnoopingThrust    bool     `reg:"ip dhcp snooping trust" cmd:"ip dhcp snooping trust"`
-	Vrf                   string   `reg:"ip vrf forwarding ([[:print:]]+)" cmd:"ip vrf forwarding %s"`
 	Ips                   []Ip     `reg:"ip address.*" cmd:"ip address"`
 	IPHelperAddresses     []string `reg:"ip helper-address (\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\.\\d{1,3})" cmd:"ip helper-address %s"`
+	Vrf                   string   `reg:"ip vrf forwarding ([[:print:]]+)" cmd:"ip vrf forwarding %s"`
 	OspfNetwork           string   `reg:"ip ospf network (broadcast|non-broadcast|point-to-multipoint|point-to-point)" cmd:"ip ospf network %s"`
 }
 
