@@ -1,6 +1,8 @@
 package jap
 
 import (
+	"log"
+	"reflect"
 	"regexp"
 	"strconv"
 	"strings"
@@ -59,7 +61,8 @@ func Parse(config string) (RunningConfig, error) {
 		// Get all interfaces
 		re, _ = regexp.Compile(`^\s*interface ([\w\/\.\-\:]+)`)
 		if re.MatchString(firstLine) {
-			inter, err := ParseInterface(part)
+			var inter CiscoInterface
+			err := inter.Parse(part)
 			if err != nil {
 				return RunningConfig{}, err
 			}
@@ -86,4 +89,112 @@ func Parse(config string) (RunningConfig, error) {
 	}
 
 	return running, nil
+}
+
+func ProcessParse(part string, parsed any) error {
+	var v, tmp, rv reflect.Value
+	if reflect.TypeOf(parsed).String() != "reflect.Value" {
+		v = reflect.Indirect(reflect.ValueOf(&parsed)).Elem()
+		tmp = reflect.New(v.Elem().Type()).Elem()
+		tmp.Set(v.Elem())
+
+		rv = reflect.Indirect(reflect.ValueOf(parsed))
+	} else {
+		v, tmp, rv = parsed.(reflect.Value), parsed.(reflect.Value), parsed.(reflect.Value)
+	}
+
+	rt := rv.Type()
+
+	for i := 0; i < rv.NumField(); i++ {
+		field := rt.Field(i)
+		tag := field.Tag.Get("reg")
+		if tag != "" {
+			re := regexp.MustCompile(tag)
+			// @todo check if no is with the command!
+			data := re.FindAllStringSubmatch(part, -1)
+			if len(data) == 0 {
+				continue
+			}
+
+			switch field.Type.Kind() {
+			case reflect.String:
+				//reflect.ValueOf(&parsed).Elem().Elem().Field(i).SetString(data[0][1])
+				tmp.Field(i).SetString(data[0][1])
+				break
+			case reflect.Int:
+				value, err := strconv.ParseInt(data[0][1], 10, 64)
+				if err != nil {
+					return nil
+				}
+				// reflect.ValueOf(&parsed).Elem().Field(i).SetInt(value)
+				tmp.Field(i).SetInt(value)
+				break
+			case reflect.Bool:
+				// reflect.ValueOf(&parsed).Elem().Field(i).SetBool(true)
+				tmp.Field(i).SetBool(true)
+				break
+			case reflect.Float64:
+				float, err := strconv.ParseFloat(data[0][1], 64)
+				if err != nil {
+					return nil
+				}
+				//reflect.ValueOf(&parsed).Elem().Field(i).SetFloat(float)
+				tmp.Field(i).SetFloat(float)
+			default:
+				log.Println(field.Type.String() + " not implemented!")
+				//panic(field.Type.String() + " not implemented!")
+
+			case reflect.Slice:
+				switch field.Type.String() {
+				case "[]string":
+					for _, d := range data {
+						//valuePtr := reflect.ValueOf(&tmp)
+						value := tmp.Field(i)
+						value.Set(reflect.Append(value, reflect.ValueOf(d[1])))
+					}
+				case "[]int":
+					value := tmp.Field(i)
+					for _, d := range data {
+						seperated := strings.Split(d[2], ",")
+						for _, number := range seperated {
+							if strings.Contains(number, "-") {
+								vlanSplit := strings.Split(number, "-")
+								from, _ := strconv.Atoi(vlanSplit[0])
+								to, _ := strconv.Atoi(vlanSplit[1])
+								for j := from; j <= to; j++ {
+									value.Set(reflect.Append(value, reflect.ValueOf(j)))
+								}
+								continue
+							}
+							vlanI, _ := strconv.Atoi(number)
+							value.Set(reflect.Append(value, reflect.ValueOf(vlanI)))
+						}
+					}
+				default:
+					// Irgendwie das Struct zum laufen bringen... irgendwas geht so überhaupt nicht
+					values := tmp.Field(i)
+					//value := valuePtr.Field(i)
+					if values.Type().Kind() == reflect.Slice {
+						for _, t := range data {
+							tmp2 := reflect.New(values.Type().Elem()).Elem()
+							err := ProcessParse(strings.Join(t, " "), tmp2)
+							if err != nil {
+								return err
+							}
+							values.Set(reflect.Append(values, tmp2))
+						}
+						continue
+					}
+					panic(field.Type.String() + " not implemented!")
+				}
+			}
+		}
+	}
+	if reflect.TypeOf(parsed).String() != "reflect.Value" {
+		reflect.ValueOf(parsed).Elem().Set(tmp)
+	} else {
+		parsed.(reflect.Value).Set(tmp)
+	}
+
+	return nil
 }
