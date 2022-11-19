@@ -269,10 +269,10 @@ vlan 189
  name vlan-189
 !
 vlan 195
- name v-w-customer-2
+ name customer-2
 !
 vlan 196
- name v-k-customer-2
+ name customer-2
 !
 vlan 221
  name vlan-221
@@ -966,7 +966,7 @@ router ospf 3
  passive-interface Vlan3
  network 192.168.0.1 0.0.0.255 area 192.168.0.0
  network 192.168.1.1 0.0.0.255 area 192.168.0.0
- network 192.168.2.1 0.0.0.0 area 192.168.0.0
+ network 192.168.2.1 0.0.0.0 area 0
 !
 ip forward-protocol nd
 no ip http server

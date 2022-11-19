@@ -1,15 +1,15 @@
 interface FastEthernet0/2
- switchport access vlan 200
- switchport mode access
- switchport voice vlan 300
- switchport port-security maximum 5
- switchport port-security violation restrict
- switchport port-security aging time 2
- switchport port-security aging type inactivity
- switchport port-security
- description Access to VLAN 200
- shutdown
- srr-queue bandwidth shape  0 0 0 0
- storm-control broadcast level 0.50
- spanning-tree portfast edge
- spanning-tree bpduguard enable
+  switchport access vlan 200
+  switchport mode access
+  switchport voice vlan 300
+  switchport port-security maximum 5
+  switchport port-security violation restrict
+  switchport port-security aging time 2
+  switchport port-security aging type inactivity
+  switchport port-security
+  description Access to VLAN 200
+  shutdown
+  storm-control broadcast level 0.50
+  spanning-tree portfast edge
+  spanning-tree bpduguard enable
+!
