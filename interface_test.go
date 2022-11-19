@@ -1,7 +1,6 @@
 package jap
 
 import (
-	"fmt"
 	"io/ioutil"
 	"testing"
 )
@@ -106,7 +105,7 @@ func TestParseInterface(t *testing.T) {
 			t.Error(err)
 		}
 
-		fmt.Println(inter.Generate())
+		inter.Generate()
 
 		if len(testInter.TestIps) != len(inter.Ips) {
 			t.Errorf("Wrong number of interfaces returned want: `%d` got: `%d`", len(testInter.TestIps), len(inter.Ips))

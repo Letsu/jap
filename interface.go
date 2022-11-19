@@ -29,7 +29,7 @@ type CiscoInterface struct {
 	PortSecurity          bool     `reg:"switchport port-security" cmd:"switchport port-security"`
 	Description           string   `reg:"description ([[:print:]]+)" cmd:"description %s"`
 	NativeVlan            int      `reg:"switchport trunk native vlan ([0-9]+)" cmd:"switchport trunk native vlan %d"`
-	TrunkAllowedVlan      []int    `reg:"switchport trunk allowed vlan( add)? ([\\d,-]+)"`
+	TrunkAllowedVlan      []int    `reg:"switchport trunk allowed vlan( add)? ([\\d,-]+)" cmd:"switchport trunk allowed vlan %s"`
 	Trunk                 bool     `reg:"switchport mode trunk" cmd:"switchport mode trunk"`
 	Shutdown              bool     `reg:"shutdown" cmd:"shutdown"`
 	SCBroadcastLevel      float64  `reg:"storm-control broadcast level ([0-9\\.]+)" cmd:"storm-control broadcast level %.2f"`
@@ -39,16 +39,16 @@ type CiscoInterface struct {
 	ServicePolicyOutput   string   `reg:"service-policy output ([[:print:]]+)" cmd:"service-policy output %s"`
 	DhcpSnoopingThrust    bool     `reg:"ip dhcp snooping trust" cmd:"ip dhcp snooping trust"`
 	Vrf                   string   `reg:"ip vrf forwarding ([[:print:]]+)" cmd:"ip vrf forwarding %s"`
-	Ips                   []Ip     `reg:"ip address.*"`
+	Ips                   []Ip     `reg:"ip address.*" cmd:"ip address"`
 	IPHelperAddresses     []string `reg:"ip helper-address (\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\.\\d{1,3})" cmd:"ip helper-address %s"`
 	OspfNetwork           string   `reg:"ip ospf network (broadcast|non-broadcast|point-to-multipoint|point-to-point)" cmd:"ip ospf network %s"`
 }
 
 type Ip struct {
-	Ip        string `reg:"ip address (\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}) (?:\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\.\\d{1,3})"`
-	Subnet    string `reg:"ip address (?:\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}) (\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\.\\d{1,3})"`
-	Secondary bool   `reg:"ip address (?:\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}) (?:\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\.\\d{1,3})( secondary)(?: vrf ([\\w\\-]+))?"`
-	VRF       string `reg:"ip address (?:\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}) (?:\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\.\\d{1,3})(?: secondary)?( vrf ([\\w\\-]+))"`
+	Ip        string `reg:"ip address (\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}) (?:\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\.\\d{1,3})" cmd:" %s"`
+	Subnet    string `reg:"ip address (?:\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}) (\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\.\\d{1,3})" cmd:" %s"`
+	Secondary bool   `reg:"ip address (?:\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}) (?:\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\.\\d{1,3})( secondary)(?: vrf ([\\w\\-]+))?" cmd:" secondary"`
+	VRF       string `reg:"ip address (?:\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}) (?:\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\.\\d{1,3})(?: secondary)?( vrf ([\\w\\-]+))" cmd:" vrf %s"`
 }
 
 func (inter *CiscoInterface) Parse(part string) error {
