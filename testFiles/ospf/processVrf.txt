@@ -1,0 +1,7 @@
+router ospf 1450 vrf customer-4
+  network 192.168.20.1 0.0.0.127 area 1.1.1.1
+  network 192.168.21.1 0.0.0.0 area 1.1.1.1
+  network 192.168.22.1 0.0.0.0 area 1.1.1.1
+  network 192.168.23.1 0.0.0.0 area 1.1.1.1
+  network 192.168.23.5 0.0.0.0 area 1.1.1.1
+!

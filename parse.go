@@ -72,11 +72,12 @@ func Parse(config string) (RunningConfig, error) {
 		// Router OSPF
 		re, _ = regexp.Compile(`^\s*router ospf (\d+)( vrf ([[:print:]]+))?`)
 		if re.MatchString(firstLine) {
-			process, err := ParseOSPF(part)
+			var ospf Ospf
+			err := ospf.Parse(part)
 			if err != nil {
 				return RunningConfig{}, err
 			}
-			running.OSPFProcess = append(running.OSPFProcess, process)
+			running.OSPFProcess = append(running.OSPFProcess, ospf)
 			continue
 		}
 
