@@ -73,5 +73,4 @@ func TestParse(t *testing.T) {
 			t.Errorf("Wrong vlan number wants %v got %v", testFile.NumberOfVlans, len(running.Vlans))
 		}
 	}
-
 }
