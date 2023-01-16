@@ -16,6 +16,7 @@ type RunningConfig struct {
 	OSPFProcess     []Ospf
 }
 
+// Parse parses a standard cisco running config.
 func Parse(config string) (RunningConfig, error) {
 	var running RunningConfig
 
@@ -91,7 +92,7 @@ func Parse(config string) (RunningConfig, error) {
 	return running, nil
 }
 
-func ProcessParse(part string, parsed any) error {
+func processParse(part string, parsed any) error {
 	// Check if type is already a "reflect.Value", to let the function call itself in case of a struct in a struct
 	var v, tmp, rv reflect.Value
 	if reflect.TypeOf(parsed).String() != "reflect.Value" {
@@ -170,7 +171,7 @@ func ProcessParse(part string, parsed any) error {
 					if values.Type().Kind() == reflect.Slice {
 						for _, t := range data {
 							tmp2 := reflect.New(values.Type().Elem()).Elem()
-							err := ProcessParse(strings.Join(t, " "), tmp2)
+							err := processParse(strings.Join(t, " "), tmp2)
 							if err != nil {
 								return err
 							}

@@ -7,6 +7,8 @@ import (
 	"strings"
 )
 
+// Generate creates a cisco command line from the given struct.
+// The command gets generated from the cmd tag of the struct and parsed with a printf.
 func Generate(parsed any) (string, error) {
 	var config string
 
@@ -15,7 +17,7 @@ func Generate(parsed any) (string, error) {
 		field := t.Field(i)
 		tag := field.Tag.Get("cmd")
 		if tag != "" {
-			cmd, err := GenerateCMD(reflect.ValueOf(&parsed).Elem().Elem().Field(i), tag)
+			cmd, err := generateCMD(reflect.ValueOf(&parsed).Elem().Elem().Field(i), tag)
 			if err != nil {
 				return "", err
 			}
@@ -30,7 +32,7 @@ func Generate(parsed any) (string, error) {
 	return config, nil
 }
 
-func GenerateCMD(field reflect.Value, tag string) (string, error) {
+func generateCMD(field reflect.Value, tag string) (string, error) {
 	var cmd string
 
 	switch field.Type().Kind() {
@@ -92,7 +94,7 @@ func GenerateCMD(field reflect.Value, tag string) (string, error) {
 				for i2 := 0; i2 < field.Len(); i2++ {
 					cmds := tag
 					for i1 := 0; i1 < field.Type().Elem().NumField(); i1++ {
-						gcmd, _ := GenerateCMD(field.Index(i2).Field(i1), field.Index(0).Type().Field(i1).Tag.Get("cmd"))
+						gcmd, _ := generateCMD(field.Index(i2).Field(i1), field.Index(0).Type().Field(i1).Tag.Get("cmd"))
 						cmds = cmds + gcmd
 						//cmds = fmt.Sprintf(field1.Index(0).Type().Field(i1).Tag.Get("cmd"), )
 					}
