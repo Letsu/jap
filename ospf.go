@@ -29,7 +29,7 @@ func (o *Ospf) Parse(part string) error {
 		o.ProcessVRF = head[2]
 	}
 
-	err := ProcessParse(part, o)
+	err := processParse(part, o)
 	if err != nil {
 		return err
 	}

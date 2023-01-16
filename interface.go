@@ -62,7 +62,7 @@ func (inter *CiscoInterface) Parse(part string) error {
 	}
 
 	//Parse the interface struct
-	err := ProcessParse(part, inter)
+	err := processParse(part, inter)
 	if err != nil {
 		return err
 	}
