@@ -92,18 +92,31 @@ func Parse(config string) (RunningConfig, error) {
 	return running, nil
 }
 
+// processParse takes a part of the config and a pointer to a struct with tags on how to parse the config part.
+// processParse can also take a reflect.Value to call itself.
 func processParse(part string, parsed any) error {
 	// Check if type is already a "reflect.Value", to let the function call itself in case of a struct in a struct
-	var v, tmp, rv reflect.Value
+	var tmp, rv reflect.Value
+	// In the normal case the function takes a struct.
+	//In case of a struct as parsed parameter it creates a copy of the struct to write to the copy of its reflection
+	// When a reflect.Value is already used as parsed parameter this is not needed and cause an error.
+	// The Value still needs to be a reflect of a struct value to function. This is needed to work with recursion e.g.
+	// structs in structs.
+	// I don't really now how I got all this reflect stuff together and working so note to further self:
+	// Make this more stable as soon I understand this shit...
 	if reflect.TypeOf(parsed).String() != "reflect.Value" {
 		// Generate a copy of the "parsed" interface to fill it with values
-		v = reflect.Indirect(reflect.ValueOf(&parsed)).Elem()
+		v := reflect.Indirect(reflect.ValueOf(&parsed)).Elem()
+		// tmp is the copy and can be written to.
+		// parsed, rv and rt are read only. parsed can be completely overwritten but no values can be set on by one
 		tmp = reflect.New(v.Elem().Type()).Elem()
 		tmp.Set(v.Elem())
 
 		rv = reflect.Indirect(reflect.ValueOf(parsed))
 	} else {
-		v, tmp, rv = parsed.(reflect.Value), parsed.(reflect.Value), parsed.(reflect.Value)
+		// write any value as reflect.Value to all the copied and real value
+		// in this case parsed is writeable and no copy needed
+		tmp, rv = parsed.(reflect.Value), parsed.(reflect.Value)
 	}
 	rt := rv.Type()
 
@@ -119,6 +132,7 @@ func processParse(part string, parsed any) error {
 				continue
 			}
 
+			// Check the Line of the struct field
 			switch field.Type.Kind() {
 			case reflect.String:
 				tmp.Field(i).SetString(data[0][1])
@@ -184,11 +198,14 @@ func processParse(part string, parsed any) error {
 			}
 		}
 	}
+
+	// Overwrite parsed with tmp to get the values back to the caller.
+	// In case parsed is a reflect.Value it needs to write into the element and not the Value itself
 	if reflect.TypeOf(parsed).String() != "reflect.Value" {
 		reflect.ValueOf(parsed).Elem().Set(tmp)
-	} else {
-		parsed.(reflect.Value).Set(tmp)
+		return nil
 	}
 
+	parsed.(reflect.Value).Set(tmp)
 	return nil
 }
